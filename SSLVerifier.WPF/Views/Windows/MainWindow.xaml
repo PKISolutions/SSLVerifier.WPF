@@ -1,0 +1,229 @@
+﻿<Window x:Class="SSLVerifier.Views.Windows.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="clr-namespace:SSLVerifier.API.ViewModels"
+        xmlns:system="clr-namespace:System;assembly=mscorlib"
+        xmlns:uc="clr-namespace:SSLVerifier.Views.UserControls"
+        WindowStyle="ThreeDBorderWindow"
+        ScrollViewer.HorizontalScrollBarVisibility="Visible"
+        ScrollViewer.CanContentScroll="True"
+        Title="SSL Certificate Verifier" Height="550" Width="850"
+        Closing="MainWindow_OnClosing">
+    <Window.DataContext>
+        <vm:MainWindowVM/>
+    </Window.DataContext>
+    <Window.InputBindings>
+        <KeyBinding Modifiers="Ctrl" Key="N" Command="{Binding NewListCommand}"/>
+        <KeyBinding Modifiers="Ctrl" Key="S" Command="{Binding SaveListCommand}"/>
+        <KeyBinding Modifiers="Ctrl" Key="O" Command="{Binding OpenListCommand}"/>
+        <KeyBinding Modifiers="Ctrl" Key="E" Command="{Binding StartSingleScanCommand}"/>
+        <KeyBinding Modifiers="Control" Key="Enter" Command="{Binding StartSingleScan2Command}"/>
+        <KeyBinding Key="F5" Command="{Binding StartScanCommand}"/>
+        <KeyBinding Key="OemPlus" Command="{Binding AddServerCommand}"/>
+        <KeyBinding Key="Delete" Command="{Binding RemoveServerCommand}"/>
+    </Window.InputBindings>
+    <DockPanel>
+        <Menu DockPanel.Dock="Top" VerticalAlignment="Top">
+            <MenuItem Header="_File">
+                <MenuItem Header="_New Server List" InputGestureText="Ctrl+N" Command="{Binding NewListCommand}">
+                    <MenuItem.Icon>
+                        <Image Source="/Views/Images/Menu/new_16x16.png"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem Header="_Open Server List" InputGestureText="Ctrl+O" Command="{Binding OpenListCommand}">
+                    <MenuItem.Icon>
+                        <Image Source="/Views/Images/Menu/open_16x16.png"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem Header="Save As..." Command="{Binding SaveAsListCommand}"/>
+                <MenuItem Header="_Save Server List" InputGestureText="Ctrl+S" Command="{Binding SaveListCommand}">
+                    <MenuItem.Icon>
+                        <Image Source="/Views/Images/Menu/save_16x16.png"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem Name="exitMenu" Header="E_xit" Command="{Binding CloseCommand}" InputGestureText="Alt+F4"/>
+            </MenuItem>
+            <MenuItem Header="Edit">
+                <MenuItem Header="Cut" InputGestureText="Ctrl+X" Command="ApplicationCommands.Cut">
+                    <MenuItem.Icon>
+                        <Image Source="/Views/Images/Menu/cut_16x16.png"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem Header="Copy" InputGestureText="Ctrl+C" Command="ApplicationCommands.Copy">
+                    <MenuItem.Icon>
+                        <Image Source="/Views/Images/Menu/copy_16x16.png"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem Header="Paste" InputGestureText="Ctrl+V" Command="ApplicationCommands.Paste">
+                    <MenuItem.Icon>
+                        <Image Source="/Views/Images/Menu/paste_16x16.png"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+            </MenuItem>
+            
+            <MenuItem Header="_Actions">
+                <MenuItem Header="Add Server" Command="{Binding AddServerCommand}" InputGestureText="+ (NumPad)">
+                    <MenuItem.Icon>
+                        <Image Source="/Views/Images/Menu/add_16x16.png"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem Header="Remove Server" Command="{Binding RemoveServerCommand}" InputGestureText="Del">
+                    <MenuItem.Icon>
+                        <Image Source="/Views/Images/Menu/remove_16x16.png"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem Header="Scan Selected Entry" Command="{Binding StartSingleScanCommand}" InputGestureText="Ctrl+E">
+                    <MenuItem.Icon>
+                        <Image Source="/Views/Images/Menu/start_16x16.png"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem Header="Scan All" Command="{Binding StartScanCommand}" InputGestureText="F5">
+                    <MenuItem.Icon>
+                        <Image Source="/Views/Images/Menu/playall_16x16.png" Width="16"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+            </MenuItem>
+            <MenuItem Header="_Options">
+                <MenuItem Header="Settings" Command="{Binding ShowSettings}"/>
+            </MenuItem>
+            <MenuItem Header="_Help">
+                <MenuItem Header="About" Command="{Binding ShowAboutCommand}">
+                    <MenuItem.Icon>
+                        <Image Source="/Views/Images/Menu/info_16x16.png"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+            </MenuItem>
+        </Menu>
+        <ToolBarTray DockPanel.Dock="Top" VerticalAlignment="Top">
+            <ToolBar>
+                <Button Name="newMenu" Command="{Binding NewListCommand}" ToolTip="New server list (Ctrl+N)">
+                    <Image Source="/Views/Images/Menu/new_16x16.png"/>
+                </Button>
+                <Separator/>
+                <Button Command="{Binding OpenListCommand}" ToolTip="Open server list (Ctrl+O)">
+                    <Image Source="/Views/Images/Menu/open_16x16.png" />
+                </Button>
+                <Separator/>
+                <Button Command="{Binding SaveListCommand}" ToolTip="Save server list (Ctrl+S)">
+                    <Image Source="/Views/Images/Menu/save_16x16.png"/>
+                </Button>
+                <Separator/>
+                <Button Command="{Binding ViewCertificateCommand}" ToolTip="View certificate">
+                    <Image Source="/Views/Images/Misc/normalcert.png"/>
+                </Button>
+            </ToolBar>
+            <ToolBar>
+                <Button ToolTip="Cut (Ctrl+X)" Command="ApplicationCommands.Cut">
+                    <Image Source="/Views/Images/Menu/cut_16x16.png"/>
+                </Button>
+                <Separator/>
+                <Button ToolTip="Copy (Ctrl+C)" Command="ApplicationCommands.Copy">
+                    <Image Source="/Views/Images/Menu/copy_16x16.png"/>
+                </Button>
+                <Separator/>
+                <Button ToolTip="Paste (Ctrl+V)" Command="ApplicationCommands.Paste">
+                    <Image Source="/Views/Images/Menu/paste_16x16.png"/>
+                </Button>
+            </ToolBar>
+            <ToolBar>
+                <Button Command="{Binding AddServerCommand}"  ToolTip="Add new server (+ (NumPad))">
+                    <Image Source="/Views/Images/Menu/add_16x16.png"/>
+                </Button>
+                <Separator/>
+                <Button Command="{Binding RemoveServerCommand}" ToolTip="Remove selected server (Del)">
+                    <Image Source="/Views/Images/Menu/remove_16x16.png" />
+                </Button>
+                <Separator/>
+                <Button Command="{Binding StartSingleScanCommand}" ToolTip="Scan selected item (Ctrl+E)">
+                    <Image Source="/Views/Images/Menu/start_16x16.png"/>
+                </Button>
+                <Separator/>
+                <Button Command="{Binding StartScanCommand}" ToolTip="Scan all entries (F5)">
+                    <Image Source="/Views/Images/Menu/playall_16x16.png" Width="16" Height="16"/>
+                </Button>
+            </ToolBar>
+            <ToolBar Foreground="Navy">
+                <TextBlock VerticalAlignment="Center" Text="Expiration threshold:"/>
+                <TextBox Width="30" Text="{Binding Threshold, UpdateSourceTrigger=PropertyChanged}" BorderThickness="1" BorderBrush="Gray"/>
+            </ToolBar>
+            <ToolBar Foreground="Navy">
+                <TextBlock VerticalAlignment="Center" Text="https://"/>
+                <TextBox Width="100"
+                         MaxLength="100"
+                         Text="{Binding ServerName2, UpdateSourceTrigger=PropertyChanged}" BorderThickness="1" BorderBrush="Gray"/>
+                <TextBlock Text=":"/>
+                <ComboBox BorderThickness="1"
+                          BorderBrush="Gray"
+                          Text="{Binding Port2}"
+                          SelectedValuePath="Content"
+                          Width="60"
+                          IsEditable="True"
+                          IsReadOnly="False">
+                    <ComboBoxItem>
+                        <system:Int32>25</system:Int32>
+                    </ComboBoxItem>
+                    <ComboBoxItem>
+                        <system:Int32>443</system:Int32>
+                    </ComboBoxItem>
+                    <ComboBoxItem>
+                        <system:Int32>636</system:Int32>
+                    </ComboBoxItem>
+                    <ComboBoxItem>
+                        <system:Int32>993</system:Int32>
+                    </ComboBoxItem>
+                </ComboBox>
+                <Button Margin="5,0,0,0" Command="{Binding StartSingleScan2Command}" ToolTip="Go (Ctrl+Enter)">
+                    <Image Source="/Views/Images/Menu/start_16x16.png"/>	
+                </Button>
+            </ToolBar>
+        </ToolBarTray>
+        <StatusBar Height="25" VerticalAlignment="Bottom" DockPanel.Dock="Bottom">
+            <StatusBarItem>
+                <TextBlock ToolTip="{Binding StatusText}">
+                    <Run Text="Status:"/>
+                    <Run Text="{Binding StatusText}"/>
+                </TextBlock>
+            </StatusBarItem>
+            <Separator BorderBrush="#93B0D5" BorderThickness="1,0,0,0"/>
+            <StatusBarItem>
+                    <TextBlock Foreground="Navy">
+                        <Run Text="Total:"/>
+                        <Run Text="{Binding Servers.Count, Mode=OneWay}"/>
+                    </TextBlock>
+            </StatusBarItem>
+            <Separator BorderBrush="#93B0D5" BorderThickness="1,0,0,0"/>
+            <StatusBarItem>
+                <TextBlock Foreground="Black">
+                    <Run Text="Unknown:"/>
+                    <Run Text="{Binding StatCounter.Unknown}"/>
+                </TextBlock>
+            </StatusBarItem>
+            <Separator BorderBrush="#93B0D5" BorderThickness="1,0,0,0"/>
+            <StatusBarItem>
+                <TextBlock Foreground="LimeGreen">
+                    <Run Text="Valid:"/>
+                    <Run Text="{Binding StatCounter.Valid}"/>
+                </TextBlock>
+            </StatusBarItem>
+            <Separator BorderBrush="#93B0D5" BorderThickness="1,0,0,0"/>
+            <StatusBarItem>
+                <TextBlock Foreground="Orange">
+                    <Run Text="Warning:"/>
+                    <Run Text="{Binding StatCounter.Pending}"/>
+                </TextBlock>
+            </StatusBarItem>
+            <Separator BorderBrush="#93B0D5" BorderThickness="1,0,0,0"/>
+            <StatusBarItem>
+                <TextBlock Foreground="Red">
+                    <Run Text="Failed:"/>
+                    <Run Text="{Binding StatCounter.Failed}"/>
+                </TextBlock>
+            </StatusBarItem>
+            <Separator BorderBrush="#93B0D5" BorderThickness="1,0,0,0"/>
+            <StatusBarItem HorizontalAlignment="Right">
+                <ProgressBar Visibility="{Binding ProgressVisible}" Width="150" Height="15" Value="{Binding Progress}" Margin="0,0,10,0"/>
+            </StatusBarItem>
+        </StatusBar>
+        <uc:MainGridUserControl VerticalAlignment="Stretch"/>
+    </DockPanel>
+</Window>

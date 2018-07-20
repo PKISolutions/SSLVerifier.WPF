@@ -1,0 +1,143 @@
+﻿<UserControl x:Class="SSLVerifier.Views.UserControls.MainGridUserControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:vm="clr-namespace:SSLVerifier.API.ViewModels"
+             xmlns:uc="clr-namespace:SSLVerifier.Views.UserControls"
+             mc:Ignorable="d"
+             d:DataContext="{d:DesignInstance vm:MainWindowVM}">
+    <UserControl.Background>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+            <GradientStop Color="#BCD5F6" Offset="0" />
+            <GradientStop Color="#DCEBFD" Offset="1" />
+        </LinearGradientBrush>
+    </UserControl.Background>
+    <UserControl.Resources>
+        <Style x:Key="ItemContStyle" TargetType="{x:Type ListViewItem}">
+            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding ItemStatus}" Value="Failed">
+                    <Setter Property="Foreground" Value="Red"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding ItemStatus}" Value="Pending">
+                    <Setter Property="Foreground" Value="Orange"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding ItemStatus}" Value="Valid">
+                    <Setter Property="Foreground" Value="Green"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="Img" TargetType="Image">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding ItemStatus}" Value="Failed">
+                    <Setter Property="Source" Value="/Views/Images/Misc/bad_16x16.png"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding ItemStatus}" Value="Unknown">
+                    <Setter Property="Source" Value="/Views/Images/Misc/blank_16x16.png"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding ItemStatus}" Value="Valid">
+                    <Setter Property="Source" Value="/Views/Images/Misc/ok_16x16.png"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding ItemStatus}" Value="Pending">
+                    <Setter Property="Source" Value="/Views/Images/Misc/warn_16x16.png"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="200"/>
+        </Grid.RowDefinitions>
+        <ListView Name="listView"
+                  SelectionMode="Single"
+                  Grid.Row="0"
+                  ItemsSource="{Binding Servers}"
+                  SelectedIndex="{Binding SelectedIndex}"
+                  SelectedItem="{Binding SelectedItem}"
+                  MouseDoubleClick="lvModulesMouseDoubleClick"
+                  ItemContainerStyle="{StaticResource ItemContStyle}">
+            <ListView.ContextMenu>
+                <ContextMenu StaysOpen="true">
+                    <MenuItem Header="Properties"
+                              Command="{Binding ShowEntryProperties}">
+                        <MenuItem.Icon>
+                            <Image Source="/Views/Images/Menu/props_16x16.png" Width="16"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                </ContextMenu>
+            </ListView.ContextMenu>
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn>
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <Image Style="{StaticResource Img}"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="Server name" DisplayMemberBinding="{Binding ServerAddress}" Width="150"/>
+                    <GridViewColumn Header="Port" Width="50">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock HorizontalAlignment="Center" Text="{Binding Port}"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>	
+                    </GridViewColumn>
+                    <GridViewColumn Header="Progress" Width="{Binding Path=DataContext.ProgressWidth, RelativeSource={RelativeSource AncestorType=UserControl}}">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <ProgressBar Height="10" Value="{Binding ItemProgress}"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="Subject" DisplayMemberBinding="{Binding Certificate.Subject}" Width="300"/>
+                    <GridViewColumn Header="Valid From" Width="90">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock HorizontalAlignment="Center" Text="{Binding ValidFrom}"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="Valid To" Width="90">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock HorizontalAlignment="Center" Text="{Binding ValidTo}"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>	
+                    </GridViewColumn>
+                    <GridViewColumn Header="Days Left" Width="90">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock HorizontalAlignment="Center" Text="{Binding DaysLeft}"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                </GridView>
+            </ListView.View>
+        </ListView>
+        <GridSplitter Grid.Row="1" Height="5" ResizeBehavior="PreviousAndNext" VerticalAlignment="Top" HorizontalAlignment="Stretch" ResizeDirection="Rows"/>
+        <TabControl Grid.Row="2">
+            <TabItem Header="Trace Log">
+                <TextBox Text="{Binding SelectedItem.Log.Text, Mode=OneWay}"
+                         IsUndoEnabled="False"
+                         UndoLimit="0"
+                         VerticalAlignment="Stretch"
+                         Background="LightGoldenrodYellow"
+                         IsTabStop="False"
+                         FontFamily="Consolas"
+                         IsReadOnly="True"
+                         IsReadOnlyCaretVisible="True"
+                         ScrollViewer.CanContentScroll="True"
+                         TextWrapping="NoWrap"
+                         HorizontalScrollBarVisibility="Auto"
+                         VerticalScrollBarVisibility="Auto"/>
+            </TabItem>
+            <TabItem Header="Certificates">
+                    <uc:CertTreeView/>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</UserControl>

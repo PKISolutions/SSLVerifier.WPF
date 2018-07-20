@@ -1,0 +1,149 @@
+﻿<Window x:Class="SSLVerifier.Views.Windows.ServerEntryProperties"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:modelObjects="clr-namespace:SSLVerifier.API.ModelObjects"
+        mc:Ignorable="d"
+        d:DataContext="{d:DesignInstance modelObjects:ServerObject}"
+        WindowStartupLocation="CenterOwner"
+        Background="{StaticResource PanelBackgroundBrush}"
+        SizeToContent="Height"
+        ResizeMode="NoResize"
+        ShowInTaskbar="False"
+        Title="Server Properties"
+        Width="600">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <GroupBox Header="General information"
+                  Grid.Column="0"
+                  Grid.Row="0"
+                  Foreground="Navy">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="100"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <TextBlock Text="Server address:"
+                           Grid.Column="0"
+                           Grid.Row="0"/>
+                <TextBox Grid.Column="1"
+                         Grid.Row="0"
+                         Text="{Binding ServerAddress}"
+                         IsReadOnly="True"/>
+                <TextBlock Grid.Column="0"
+                           Grid.Row="1"
+                           Text="Port:"/>
+                <TextBox Grid.Column="1"
+                         Grid.Row="1"
+                         Text="{Binding Port}"
+                         IsReadOnly="True"/>
+            </Grid>
+        </GroupBox>
+        <GroupBox Header="Proxy"
+                  Grid.Column="0"
+                  Grid.Row="1"
+                  Foreground="Navy">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="100"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <CheckBox Content="Use proxy"
+                          Grid.Column="0"
+                          Grid.Row="0"
+                          Grid.ColumnSpan="2"
+                          IsChecked="{Binding Proxy.UseProxy}"/>
+                <Grid Grid.Column="0"
+                      Grid.Row="1"
+                      Grid.ColumnSpan="2"
+                      IsEnabled="{Binding Proxy.UseProxy}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="100"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Text="Proxy address:"
+                           Grid.Column="0"
+                           Grid.Row="0"/>
+                    <TextBox Grid.Column="1"
+                             Grid.Row="0"
+                             Text="{Binding Proxy.Server}"/>
+                    <TextBlock Grid.Column="0"
+                               Grid.Row="1"
+                               Text="Port:"/>
+                    <TextBox Grid.Column="1"
+                             Grid.Row="1"
+                             Text="{Binding Proxy.Port}"/>
+                    <CheckBox Content="Authentication"
+                              Grid.Column="0"
+                              Grid.Row="2"
+                              Grid.ColumnSpan="2"
+                              IsChecked="{Binding Proxy.UseAuthentication}"/>
+                    <Grid Grid.Column="0"
+                          Grid.Row="3"
+                          Grid.ColumnSpan="2"
+                          IsEnabled="{Binding Proxy.UseAuthentication}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="100"/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Grid.Column="0"
+                                   Grid.Row="0"
+                                   Text="User:"/>
+                        <TextBox Grid.Column="1"
+                                 Grid.Row="0"
+                                 Text="{Binding Proxy.UserName}"/>
+                        <TextBlock Grid.Column="0"
+                                   Grid.Row="1"
+                                   Text="Password:"/>
+                        <PasswordBox x:Name="passbox"
+                                     Grid.Column="1"
+                                     Grid.Row="1"/>
+                    </Grid>
+                </Grid>
+            </Grid>
+        </GroupBox>
+        <GroupBox Grid.Column="1"
+                  Grid.Row="0"
+                  Grid.RowSpan="2"
+                  Header="Status"
+                  Foreground="Navy">
+            <TextBlock Text="//TODO"/>
+        </GroupBox>
+        <DockPanel Grid.Column="0"
+                   Grid.Row="2"
+                   Grid.ColumnSpan="2"
+                   Background="{StaticResource PanelHeaderBackground}">
+            <Border BorderThickness="0,1,0,0" BorderBrush="#FF7C9EBC" DockPanel.Dock="Top"/>
+            <Button Content="Close" Click="CloseClick" DockPanel.Dock="Right" Width="60" Margin="10"/>
+            <Button Content="Save" DockPanel.Dock="Right" Width="60" Margin="10" Click="SaveClick"/>
+            <TextBlock/>
+        </DockPanel>
+    </Grid>
+</Window>
