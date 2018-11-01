@@ -101,6 +101,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="API\Functions\WindowsUI.cs" />
     <Compile Include="API\ModelObjects\SslProtocolEnablerModel.cs" />
     <Compile Include="API\ViewModels\SettingsVM.cs" />
     <Compile Include="Views\Windows\About.xaml.cs">

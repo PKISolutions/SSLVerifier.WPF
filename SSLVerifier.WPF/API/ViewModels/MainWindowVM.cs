@@ -5,6 +5,7 @@ using System.Security.Cryptography.X509Certificates;
 using System.Windows;
 using System.Windows.Input;
 using Microsoft.Win32;
+using SSLVerifier.API.Functions;
 using SSLVerifier.API.MainLogic;
 using SSLVerifier.API.ModelObjects;
 using SSLVerifier.Views.Windows;
@@ -296,9 +297,8 @@ namespace SSLVerifier.API.ViewModels {
         }
         void showProperties(Object obj) {
             ProxyObject old = SelectedItem.Proxy;
-            ServerEntryProperties dlg = new ServerEntryProperties(SelectedItem);
-            dlg.ShowDialog();
-            if (!dlg.MustSave) {
+            var dlg = WindowsUI.ShowWindowDialog<ServerEntryProperties>(SelectedItem);
+            if (dlg.MustSave) {
                 SelectedItem.Proxy = old;
             }
         }
@@ -427,8 +427,7 @@ namespace SSLVerifier.API.ViewModels {
         }
 
         static void addServer(Object obj) {
-            AddServerWindow dlg = new AddServerWindow();
-            dlg.Show();
+            WindowsUI.ShowWindow<AddServerWindow>();
         }
         Boolean canAddServer(Object obj) {
             return !Running;
@@ -456,12 +455,10 @@ namespace SSLVerifier.API.ViewModels {
         }
 
         static void ShowAbout(Object obj) {
-            About dlg = new About(Application.Current.MainWindow);
-            dlg.Show();
+            WindowsUI.ShowWindow<About>();
         }
         void showSettings(Object obj) {
-            var dlg = new SettingsWindow();
-            dlg.ShowDialog();
+            WindowsUI.ShowWindowDialog<SettingsWindow>();
         }
 
         Boolean testSaved() {
