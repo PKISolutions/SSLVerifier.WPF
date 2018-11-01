@@ -15,17 +15,8 @@ namespace SSLVerifier.Views.Windows {
 		/// <summary>
 		/// Default constructor is protected so callers must use one with a parent.
 		/// </summary>
-		About() {
+		public About() {
 			InitializeComponent();
-		}
-
-		/// <summary>
-		/// Constructor that takes a parent for this AboutBox dialog.
-		/// </summary>
-		/// <param name="parent">Parent window for this dialog.</param>
-		public About(Window parent)
-			: this() {
-			Owner = parent;
 		}
 
 		/// <summary>

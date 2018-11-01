@@ -10,6 +10,7 @@
 		cm:DialogCloser.DialogResult="{Binding DialogResult}"
 		WindowStartupLocation="CenterOwner"
 		SizeToContent="Height"
+        ResizeMode="NoResize"
 		Background="{StaticResource PanelBackgroundBrush}"
 		Foreground="Navy"
         Title="Settings"
