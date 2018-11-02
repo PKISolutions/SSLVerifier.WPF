@@ -1,5 +1,9 @@
 ﻿using System;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Input;
+using System.Windows.Media;
 using SSLVerifier.API.ViewModels;
 
 namespace SSLVerifier.Views.UserControls {
@@ -11,7 +15,20 @@ namespace SSLVerifier.Views.UserControls {
 			InitializeComponent();
 		}
 		void lvModulesMouseDoubleClick(Object Sender, MouseButtonEventArgs e) {
-			if (listView.SelectedIndex >= 0 && !((MainWindowVM)DataContext).Running) {
+            DependencyObject dep = (DependencyObject)e.OriginalSource;
+
+            while ((dep != null) && !(dep is TextBlock))
+            {
+                dep = VisualTreeHelper.GetParent(dep);
+            }
+
+            // We have only TextBlock elements in our "GridView"
+            if (dep == null || !(dep is TextBlock))
+            {
+                return;
+            }
+
+            if (listView.SelectedIndex >= 0 && !((MainWindowVM)DataContext).Running) {
 				((MainWindowVM)DataContext).StartSingleScan(null);
 			}
 		}

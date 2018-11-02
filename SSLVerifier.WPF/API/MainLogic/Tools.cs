@@ -11,7 +11,7 @@ namespace SSLVerifier.API.MainLogic {
             WindowCollection windows = Application.Current.Windows;
             Window hwnd = null;
             if (windows.Count > 0) {
-                hwnd = windows[windows.Count - 1];
+                hwnd = App.Current.MainWindow;
             }
 
             return hwnd == null
