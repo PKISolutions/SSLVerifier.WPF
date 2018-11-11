@@ -8,7 +8,7 @@ using System.Windows;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("SSL Certificate Verifier")]
-[assembly: AssemblyDescription("Checks SSL vertificates on web sites.")]
+[assembly: AssemblyDescription("Checks SSL certificates on web sites.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Sysadmins LV")]
 [assembly: AssemblyProduct("SSLVerifier")]
