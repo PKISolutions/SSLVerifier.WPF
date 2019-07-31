@@ -126,6 +126,9 @@
     <Compile Include="API\ModelObjects\XmlObject.cs" />
     <Compile Include="API\ViewModels\AddServerVM.cs" />
     <Compile Include="API\ViewModels\ViewModelBase.cs" />
+    <Compile Include="Views\Windows\LicenseWindow.xaml.cs">
+      <DependentUpon>LicenseWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Windows\ServerEntryProperties.xaml.cs">
       <DependentUpon>ServerEntryProperties.xaml</DependentUpon>
     </Compile>
@@ -143,6 +146,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Windows\AddServerWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Windows\LicenseWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -248,6 +255,7 @@
     <Resource Include="Views\Images\Menu\props_16x16.png" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Views\Images\pkisolutions_logo_small.png" />
     <Content Include="_ExternalReferences\Wpf.OfficeTheme.dll" />
   </ItemGroup>
   <ItemGroup />

@@ -45,6 +45,7 @@ namespace SSLVerifier.API.ViewModels {
             ShowEntryProperties = new RelayCommand(showProperties, canShowProperties);
             ShowSettings = new RelayCommand(showSettings);
             SaveCsvCommand = new RelayCommand(saveAsCsv, canSaveCsv);
+            ShowLicenseCommand = new RelayCommand(ShowLicense);
         }
 
         #region Commands
@@ -62,6 +63,7 @@ namespace SSLVerifier.API.ViewModels {
         public ICommand StartSingleScan2Command { get; set; }
         public ICommand StartScanCommand { get; set; }
         public ICommand ShowAboutCommand { get; set; }
+        public ICommand ShowLicenseCommand { get; set; }
         public ICommand ShowEntryProperties { get; set; }
         public ICommand ShowSettings { get; set; }
         #endregion
@@ -456,6 +458,9 @@ namespace SSLVerifier.API.ViewModels {
 
         static void ShowAbout(Object obj) {
             WindowsUI.ShowWindow<About>();
+        }
+        static void ShowLicense(Object obj) {
+            WindowsUI.ShowWindow<LicenseWindow>();
         }
         void showSettings(Object obj) {
             WindowsUI.ShowWindowDialog<SettingsWindow>();

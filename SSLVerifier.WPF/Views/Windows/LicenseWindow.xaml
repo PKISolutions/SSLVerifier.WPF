@@ -1,0 +1,30 @@
+﻿<Window x:Class="SSLVerifier.Views.Windows.LicenseWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:behaviors="clr-namespace:SysadminsLV.WPF.OfficeTheme.Toolkit.Behaviors;assembly=Wpf.OfficeTheme"
+        DataContext="{Binding RelativeSource={RelativeSource Self}}"
+        mc:Ignorable="d"
+        Title="License"
+        ShowInTaskbar="False"
+        ResizeMode="NoResize"
+        Background="{StaticResource PanelBackgroundBrush}"
+        WindowStartupLocation="CenterOwner"
+        Height="480"
+        Width="640">
+    <Window.InputBindings>
+        <KeyBinding Key="Escape" Command="{Binding CloseCommand}"/>
+    </Window.InputBindings>
+    <DockPanel>
+        <StackPanel DockPanel.Dock="Bottom"
+                    Background="{StaticResource PanelHeaderBackground}">
+            <Button Content="Close"
+                    Width="70"
+                    HorizontalAlignment="Right"
+                    Margin="10" 
+                    Command="{Binding CloseCommand}"/>
+        </StackPanel>
+        <WebBrowser behaviors:BrowserBehavior.Html="{Binding Html}"/>
+    </DockPanel>
+</Window>
