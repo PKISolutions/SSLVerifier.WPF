@@ -1,3 +1,5 @@
+# SSL Certificate Verifier Tool
+
 This is a WPF tool that allows to connect to remote web servers and examine SSL certificates.
 The tool provides the following functionality:
 * Validates the SSL certificate and validates all certificates in the chain for possible errors;
