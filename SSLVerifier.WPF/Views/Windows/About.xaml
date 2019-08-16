@@ -5,13 +5,6 @@
     x:Uid="idAboutBox"
     Style="{DynamicResource AboutDialogStyle}" WindowStartupLocation="CenterOwner">
     <Window.Resources>
-        <XmlDataProvider x:Key="AboutProvider" XPath="ApplicationInfo" IsAsynchronous="False" IsInitialLoadEnabled="True">
-            <x:XData>
-                <ApplicationInfo xmlns="">
-                    <Link Uri="https://pscmdlethelpeditor.codeplex.com/">More Info</Link>
-                </ApplicationInfo>
-            </x:XData>
-        </XmlDataProvider>
         <!--<Image x:Key="AboutLogo" Height="96" Width="96" Source="/Views/Images/logo.png" />-->
         <Style x:Key="AboutDialogStyle" TargetType="Window">
             <Setter Property="Height" Value="Auto" />
