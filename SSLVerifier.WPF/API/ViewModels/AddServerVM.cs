@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Input;
-using SSLVerifier.API.MainLogic;
+using SysadminsLV.WPF.OfficeTheme.Toolkit;
 using SysadminsLV.WPF.OfficeTheme.Toolkit.Commands;
 
 namespace SSLVerifier.API.ViewModels {
@@ -35,7 +35,7 @@ namespace SSLVerifier.API.ViewModels {
         }
         void addServer(Object obj) {
             if (String.IsNullOrEmpty(ServerName)) {
-                Tools.MsgBox("Error", "The string must not be empty.");
+                MsgBox.Show("Error", "The string must not be empty.");
                 return;
             }
             MainWindowVM mwvm = (MainWindowVM)Application.Current.MainWindow.DataContext;

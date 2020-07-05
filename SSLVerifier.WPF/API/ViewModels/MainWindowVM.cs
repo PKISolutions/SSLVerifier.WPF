@@ -5,10 +5,12 @@ using System.Security.Cryptography.X509Certificates;
 using System.Windows;
 using System.Windows.Input;
 using Microsoft.Win32;
+using SSLVerifier.API.Extensions;
 using SSLVerifier.API.Functions;
 using SSLVerifier.API.MainLogic;
 using SSLVerifier.API.ModelObjects;
 using SSLVerifier.Views.Windows;
+using SysadminsLV.WPF.OfficeTheme.Toolkit;
 using SysadminsLV.WPF.OfficeTheme.Toolkit.Commands;
 
 namespace SSLVerifier.API.ViewModels {
@@ -199,7 +201,7 @@ namespace SSLVerifier.API.ViewModels {
                     StatCounter.Refresh(Servers.Count);
                     IsSaved = true;
                 } catch (Exception e) {
-                    Tools.MsgBox("XML Read error", e.Message);
+                    MsgBox.Show("XML Read error", e.Message);
                 }
             }
         }
@@ -209,7 +211,7 @@ namespace SSLVerifier.API.ViewModels {
                 XmlRoutine.Serialize(Servers, LastSavedFile);
                 IsSaved = true;
             } catch (Exception e) {
-                Tools.MsgBox("XML Write error", e.Message);
+                MsgBox.Show("XML Write error", e.Message);
             }
         }
         void saveAsList(Object obj) {
@@ -225,7 +227,7 @@ namespace SSLVerifier.API.ViewModels {
                     XmlRoutine.Serialize(Servers, LastSavedFile);
                     IsSaved = true;
                 } catch (Exception e) {
-                    Tools.MsgBox("XML Write error", e.Message);
+                    MsgBox.Show("XML Write error", e.Message);
                 }
             }
         }
@@ -239,9 +241,9 @@ namespace SSLVerifier.API.ViewModels {
             if (result == true) {
                 LastSavedFile = dlg.FileName;
                 try {
-                    Tools.SaveArrayAsCSV(Servers, dlg.FileName);
+                    Servers.SaveAsCSV(dlg.FileName);
                 } catch (Exception e) {
-                    Tools.MsgBox("CSV Write error", e.Message);
+                    MsgBox.Show("CSV Write error", e.Message);
                 }
             }
         }
@@ -251,7 +253,7 @@ namespace SSLVerifier.API.ViewModels {
                 if (IsSaved) {
                     Application.Current.Shutdown();
                 } else {
-                    MessageBoxResult mbxResult = Tools.MsgBox(
+                    MessageBoxResult mbxResult = MsgBox.Show(
                         "SSL Certificate Verifier",
                         "Current server was modified. Save changes?",
                         MessageBoxImage.Warning,
@@ -276,7 +278,7 @@ namespace SSLVerifier.API.ViewModels {
                     if (alreadyExitRaised) {
                         e.Cancel = false;
                     } else {
-                        MessageBoxResult mbxResult = Tools.MsgBox(
+                        MessageBoxResult mbxResult = MsgBox.Show(
                             "SSL Certificate Verifier",
                             "Current server was modified. Save changes?",
                             MessageBoxImage.Warning,
@@ -468,7 +470,7 @@ namespace SSLVerifier.API.ViewModels {
 
         Boolean testSaved() {
             if (!IsSaved) {
-                MessageBoxResult mbxResult = Tools.MsgBox(
+                MessageBoxResult mbxResult = MsgBox.Show(
                     "SSL Certificate Verifier",
                     "Current server list was modified. Save changes?",
                     MessageBoxImage.Warning,
@@ -488,7 +490,7 @@ namespace SSLVerifier.API.ViewModels {
         public Boolean AddServerItem(String name, Int32 port) {
             ServerObject obj = new ServerObject { ServerAddress = name.Trim().ToLower().Replace("https://", null), Port = port };
             if (Servers.Contains(obj)) {
-                Tools.MsgBox("Error", "Entered server name already in the list.");
+                MsgBox.Show("Error", "Entered server name already in the list.");
                 return false;
             }
             Servers.Add(obj);

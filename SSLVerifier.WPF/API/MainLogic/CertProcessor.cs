@@ -252,8 +252,8 @@ namespace SSLVerifier.API.MainLogic {
             }
         }
         public void StartScan(Object sender, DoWorkEventArgs EventArgs) {
-            BackgroundWorker worker = sender as BackgroundWorker;
-            if (worker == null) { return; }
+            if (!(sender is BackgroundWorker worker)) { return; }
+
             bworker = worker;
             worker.ReportProgress(0);
             BackgroundObject background = (BackgroundObject)EventArgs.Argument;
