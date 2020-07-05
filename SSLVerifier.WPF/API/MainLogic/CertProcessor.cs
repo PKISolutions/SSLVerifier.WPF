@@ -257,7 +257,7 @@ namespace SSLVerifier.API.MainLogic {
             bworker = worker;
             worker.ReportProgress(0);
             BackgroundObject background = (BackgroundObject)EventArgs.Argument;
-            threshold = background.Treshold;
+            threshold = background.Threshold;
             Int32 duration = 100 / background.Servers.Count;
             for (Int32 index = 0; index < background.Servers.Count; index++) {
                 // if single scan is selected, process entries that are marked to process.

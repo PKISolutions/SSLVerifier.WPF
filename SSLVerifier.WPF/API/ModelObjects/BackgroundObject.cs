@@ -5,7 +5,7 @@ namespace SSLVerifier.API.ModelObjects {
 	class BackgroundObject {
 		public ObservableCollection<ServerObject> Servers { get; set; }
 		public StatusCounter Counters { get; set; }
-		public Int32 Treshold { get; set; }
+		public Int32 Threshold { get; set; }
 		public Boolean SingleScan { get; set; }
 	}
 }

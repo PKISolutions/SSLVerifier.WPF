@@ -395,7 +395,7 @@ namespace SSLVerifier.API.ViewModels {
             BackgroundObject arg = new BackgroundObject {
                 Servers = Servers,
                 Counters = StatCounter,
-                Treshold = Threshold,
+                Threshold = Threshold,
                 SingleScan = singleScan
             };
             worker.RunWorkerAsync(arg);
