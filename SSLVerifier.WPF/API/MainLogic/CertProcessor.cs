@@ -134,7 +134,7 @@ namespace SSLVerifier.API.MainLogic {
             X509Certificate2 cert = new X509Certificate2(Entry.Request.ServicePoint.Certificate);
             NativeEntry.Log.AppendLine("Leaf certificate issued to: " + cert.Subject);
             NativeEntry.Certificate = cert;
-            processCert();
+            readAltNames();
             // configure chaining engine
             if (Config.StrictUsage) {
                 Entry.InternalChain.ChainPolicy.ApplicationPolicy.Add(new Oid(SERVER_AUTHENTICATION));
@@ -187,7 +187,7 @@ namespace SSLVerifier.API.MainLogic {
                 }
             }
         }
-        void processCert() {
+        void readAltNames() {
             X509Extension san = NativeEntry.Certificate.Extensions[EXT_SAN];
             if (san != null) {
                 NativeEntry.Log.AppendLine("Found Subject Alternative Names extension in the certificate.");
