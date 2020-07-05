@@ -89,7 +89,7 @@
                     <GridViewColumn Header="Progress" Width="{Binding Path=DataContext.ProgressWidth, RelativeSource={RelativeSource AncestorType=UserControl}}">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <ProgressBar Height="10" Value="{Binding ItemProgress}"/>
+                                <ProgressBar Height="10" Value="{Binding Log.Progress}"/>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>

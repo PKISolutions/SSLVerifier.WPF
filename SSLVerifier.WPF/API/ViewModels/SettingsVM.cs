@@ -34,7 +34,7 @@ namespace SSLVerifier.API.ViewModels {
             AllowUserTrustStore = Settings.Default.AllowUserTrust;
             CheckWeakRsaPubKey = Settings.Default.CheckWeakPubKey;
             CheckWeakSignatureAlgorithms = Settings.Default.CheckWeakAlgs;
-            MinimumRsaPublicKeyLength = Settings.Default.MinimumPubKeyLength;
+            MinimumRsaPublicKeyLength = Settings.Default.MinimumRsaPubKeyLength;
             initProtos();
             initAlgs();
         }
@@ -144,7 +144,7 @@ namespace SSLVerifier.API.ViewModels {
             Settings.Default.AllowUserTrust = AllowUserTrustStore;
             Settings.Default.CheckWeakPubKey = CheckWeakRsaPubKey;
             Settings.Default.CheckWeakAlgs = CheckWeakSignatureAlgorithms;
-            Settings.Default.MinimumPubKeyLength = MinimumRsaPublicKeyLength;
+            Settings.Default.MinimumRsaPubKeyLength = MinimumRsaPublicKeyLength;
             Int32 newValue = SslProtocolsToUse
                 .Where(x => x.Enabled)
                 .Sum(protocol => (Int32)protocol.ProtocolValue);

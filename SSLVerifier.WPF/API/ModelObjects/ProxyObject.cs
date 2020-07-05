@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Security;
 using SSLVerifier.API.ViewModels;
+using SSLVerifier.Core;
 
 namespace SSLVerifier.API.ModelObjects {
-    public class ProxyObject : ViewModelBase {
+    class ProxyObject : ViewModelBase, IServerProxy {
         Boolean useProxy, useAuth;
         String server, user;
         Int32 port = 8080;
@@ -15,7 +16,6 @@ namespace SSLVerifier.API.ModelObjects {
                 OnPropertyChanged(nameof(UseProxy));
             }
         }
-
         public String Server {
             get => server;
             set {

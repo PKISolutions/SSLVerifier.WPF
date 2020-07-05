@@ -12,7 +12,7 @@ namespace SSLVerifier.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "14.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "16.5.0.0")]
     internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
@@ -68,12 +68,12 @@ namespace SSLVerifier.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("2048")]
-        public int MinimumPubKeyLength {
+        public int MinimumRsaPubKeyLength {
             get {
-                return ((int)(this["MinimumPubKeyLength"]));
+                return ((int)(this["MinimumRsaPubKeyLength"]));
             }
             set {
-                this["MinimumPubKeyLength"] = value;
+                this["MinimumRsaPubKeyLength"] = value;
             }
         }
         
@@ -103,7 +103,7 @@ namespace SSLVerifier.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("240")]
+        [global::System.Configuration.DefaultSettingValueAttribute("3840")]
         public int SslProtocolsToUse {
             get {
                 return ((int)(this["SslProtocolsToUse"]));

@@ -41,7 +41,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ICertProcessorConfig.cs" />
+    <Compile Include="Extensions\X509ChainElementCollectionEx.cs" />
+    <Compile Include="IServerLogWriter.cs" />
+    <Compile Include="IServerProxy.cs" />
+    <Compile Include="IStatusCounter.cs" />
+    <Compile Include="Models\TreeNode.cs" />
+    <Compile Include="Processor\ServerStatusEnum.cs" />
+    <Compile Include="Processor\X509ChainStatus2.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Processor\X509ChainStatusFlags2.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

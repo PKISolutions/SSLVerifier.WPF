@@ -17,7 +17,7 @@
   &lt;string&gt;1.2.840.113549.1.1.5&lt;/string&gt;
 &lt;/ArrayOfString&gt;</Value>
     </Setting>
-    <Setting Name="MinimumPubKeyLength" Type="System.Int32" Scope="User">
+    <Setting Name="MinimumRsaPubKeyLength" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">2048</Value>
     </Setting>
     <Setting Name="CheckWeakAlgs" Type="System.Boolean" Scope="User">
@@ -27,7 +27,7 @@
       <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="SslProtocolsToUse" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">240</Value>
+      <Value Profile="(Default)">3840</Value>
     </Setting>
   </Settings>
 </SettingsFile>

@@ -9,6 +9,8 @@ using SSLVerifier.API.Extensions;
 using SSLVerifier.API.Functions;
 using SSLVerifier.API.MainLogic;
 using SSLVerifier.API.ModelObjects;
+using SSLVerifier.Core;
+using SSLVerifier.Core.Processor;
 using SSLVerifier.Views.Windows;
 using SysadminsLV.WPF.OfficeTheme.Toolkit;
 using SysadminsLV.WPF.OfficeTheme.Toolkit.Commands;
@@ -123,13 +125,6 @@ namespace SSLVerifier.API.ViewModels {
                 OnPropertyChanged(nameof(StatusText));
             }
         }
-        public ChainElement Chain {
-            get => chain;
-            set {
-                chain = value;
-                OnPropertyChanged(nameof(Chain));
-            }
-        }
         public Visibility ProgressVisible {
             get => progressVisible;
             set {
@@ -151,7 +146,7 @@ namespace SSLVerifier.API.ViewModels {
                 OnPropertyChanged(nameof(ProgressWidth));
             }
         }
-        public StatusCounter StatCounter { get; set; }
+        public IStatusCounter StatCounter { get; set; }
         public ServerObject SelectedItem {
             get => selectedItem;
             set {
@@ -261,7 +256,9 @@ namespace SSLVerifier.API.ViewModels {
                     switch (mbxResult) {
                         case MessageBoxResult.Yes:
                             saveList(null);
-                            if (IsSaved) { Application.Current.MainWindow.Close(); }
+                            if (IsSaved) {
+                                Application.Current.MainWindow.Close();
+                            }
                             break;
                         case MessageBoxResult.No:
                             alreadyExitRaised = true;
@@ -300,7 +297,7 @@ namespace SSLVerifier.API.ViewModels {
             }
         }
         void showProperties(Object obj) {
-            ProxyObject old = SelectedItem.Proxy;
+            IServerProxy old = SelectedItem.Proxy;
             var dlg = WindowsUI.ShowWindowDialog<ServerEntryProperties>(SelectedItem);
             if (dlg.MustSave) {
                 SelectedItem.Proxy = old;
@@ -387,7 +384,12 @@ namespace SSLVerifier.API.ViewModels {
             StatusText = "working...";
             prepareScan();
             BackgroundWorker worker = new BackgroundWorker { WorkerReportsProgress = true };
-            var certVerifier = new CertProcessor();
+            var certVerifier = new CertProcessor {
+                Config = new CertProcessorConfig {
+                    Threshold = Threshold
+                }
+            };
+
             worker.DoWork += certVerifier.StartScan;
             worker.RunWorkerCompleted += endScan;
             worker.ProgressChanged += scanReportChanged;
@@ -395,7 +397,6 @@ namespace SSLVerifier.API.ViewModels {
             BackgroundObject arg = new BackgroundObject {
                 Servers = Servers,
                 Counters = StatCounter,
-                Threshold = Threshold,
                 SingleScan = singleScan
             };
             worker.RunWorkerAsync(arg);
@@ -419,7 +420,6 @@ namespace SSLVerifier.API.ViewModels {
             ProgressVisible = Visibility.Hidden;
             ProgressWidth = 0;
             foreach (ServerObject server in Servers) {
-                server.ItemProgress = 0;
                 server.CanProcess = false;
             }
             ((BackgroundWorker)Sender).Dispose();

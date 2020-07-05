@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 
-namespace SSLVerifier.API.ModelObjects {
+namespace SSLVerifier.Core.Models {
     public class TreeNode<T> {
         public TreeNode(T value) {
             Value = value;

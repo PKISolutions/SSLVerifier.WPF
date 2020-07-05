@@ -1,8 +1,9 @@
 ﻿using System;
 using SSLVerifier.API.ViewModels;
+using SSLVerifier.Core;
 
 namespace SSLVerifier.API.ModelObjects {
-    class StatusCounter : ViewModelBase {
+    class StatusCounter : ViewModelBase, IStatusCounter {
         Int32 unknown, valid, pending, failed;
 
         public Int32 Unknown {

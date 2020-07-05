@@ -1,25 +1,24 @@
 ﻿using System;
 using System.Collections.ObjectModel;
-using System.Net;
 using System.Security.Cryptography.X509Certificates;
 using System.Xml.Serialization;
-using SSLVerifier.API.MainLogic;
 using SSLVerifier.API.ViewModels;
-using SSLVerifier.Properties;
+using SSLVerifier.Core;
+using SSLVerifier.Core.Models;
+using SSLVerifier.Core.Processor;
 
 namespace SSLVerifier.API.ModelObjects {
     [XmlType(AnonymousType = true)]
-    public class ServerObject : ViewModelBase, IDisposable {
+    public class ServerObject : ViewModelBase {
         X509Certificate2 cert;
         String name;
-        Int32 port, progress;
+        Int32 port;
         ServerStatusEnum status;
 
         public ServerObject() {
             status = ServerStatusEnum.Unknown;
-            TempChain = new X509Chain(Settings.Default.AllowUserTrust);
             SAN = new ObservableCollection<String>();
-            Log = new StringBuilderWrapper();
+            Log = new ServerLogWriter();
             Tree = new ObservableCollection<TreeNode<ChainElement>>();
             Proxy = new ProxyObject();
         }
@@ -40,7 +39,7 @@ namespace SSLVerifier.API.ModelObjects {
                 OnPropertyChanged(nameof(Port));
             }
         }
-        public ProxyObject Proxy { get; set; }
+        public IServerProxy Proxy { get; set; }
         [XmlIgnore]
         public ServerStatusEnum ItemStatus {
             get => status;
@@ -50,15 +49,7 @@ namespace SSLVerifier.API.ModelObjects {
             }
         }
         [XmlIgnore]
-        public Int32 ItemProgress {
-            get => progress;
-            set {
-                progress = value;
-                OnPropertyChanged(nameof(ItemProgress));
-            }
-        }
-        [XmlIgnore]
-        public StringBuilderWrapper Log { get; set; }
+        public IServerLogWriter Log { get; }
         [XmlIgnore]
         public String ValidFrom => Certificate?.NotBefore.ToShortDateString();
 
@@ -69,9 +60,7 @@ namespace SSLVerifier.API.ModelObjects {
         public Int32 DaysLeft => Certificate == null ? 0 : (Certificate.NotAfter - DateTime.Now).Days;
 
         [XmlIgnore]
-        public Boolean ShouldScan { get; set; }
-        [XmlIgnore]
-        public ObservableCollection<String> SAN { get; set; }
+        public ObservableCollection<String> SAN { get; }
         [XmlIgnore]
         public X509ChainStatusFlags2 ChainStatus { get; set; }
         [XmlIgnore]
@@ -86,23 +75,10 @@ namespace SSLVerifier.API.ModelObjects {
             }
         }
         [XmlIgnore]
-        public ChainElement Chain { get; set; }
-        [XmlIgnore]
-        public HttpWebRequest TempRequest { get; set; }
-        [XmlIgnore]
-        public HttpWebResponse TempResponse { get; set; }
-        [XmlIgnore]
-        public X509Chain TempChain { get; set; }
-        [XmlIgnore]
         public ObservableCollection<TreeNode<ChainElement>> Tree { get; set; }
         [XmlIgnore]
         public Boolean CanProcess { get; set; }
-
-        public void Dispose() {
-            TempChain.Reset();
-            TempResponse?.Close();
-        }
-
+        
         public override String ToString() {
             return Certificate == null
                 ? "\"" + ServerAddress + "\"," + "\"" + Port + "\",,,,,"

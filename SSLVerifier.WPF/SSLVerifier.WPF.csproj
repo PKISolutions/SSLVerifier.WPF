@@ -103,6 +103,8 @@
     </ApplicationDefinition>
     <Compile Include="API\Extensions\IEnumerableExtensions.cs" />
     <Compile Include="API\Functions\WindowsUI.cs" />
+    <Compile Include="API\MainLogic\ServerObjectWrapper.cs" />
+    <Compile Include="API\ModelObjects\CertProcessorConfig.cs" />
     <Compile Include="API\ModelObjects\SslProtocolEnablerModel.cs" />
     <Compile Include="API\ViewModels\SettingsVM.cs" />
     <Compile Include="Views\Windows\About.xaml.cs">
@@ -111,17 +113,13 @@
     <Compile Include="Views\Windows\AddServerWindow.xaml.cs">
       <DependentUpon>AddServerWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="API\Extensions\X509ChainElementCollectionEx.cs" />
     <Compile Include="API\MainLogic\CertProcessor.cs" />
-    <Compile Include="API\MainLogic\X509ChainStatusFlags2.cs" />
     <Compile Include="API\MainLogic\XmlRoutine.cs" />
     <Compile Include="API\ModelObjects\BackgroundObject.cs" />
     <Compile Include="API\ModelObjects\ChainElement.cs" />
     <Compile Include="API\ModelObjects\ProxyObject.cs" />
     <Compile Include="API\ModelObjects\ReportObject.cs" />
-    <Compile Include="API\ModelObjects\TreeNode.cs" />
-    <Compile Include="API\ModelObjects\StringBuilderWrapper.cs" />
-    <Compile Include="API\ModelObjects\ServerStatusEnum.cs" />
+    <Compile Include="API\ModelObjects\ServerLogWriter.cs" />
     <Compile Include="API\ModelObjects\StatusCounter.cs" />
     <Compile Include="API\ModelObjects\XmlObject.cs" />
     <Compile Include="API\ViewModels\AddServerVM.cs" />
@@ -258,7 +256,12 @@
     <Resource Include="Views\Images\pkisolutions_logo_small.png" />
     <Content Include="_ExternalReferences\Wpf.OfficeTheme.dll" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\SSLVerifier.Core\SSLVerifier.Core.csproj">
+      <Project>{CC7009E4-1446-43D9-900D-5B2013CAECDC}</Project>
+      <Name>SSLVerifier.Core</Name>
+    </ProjectReference>
+  </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json">
       <Version>11.0.2</Version>

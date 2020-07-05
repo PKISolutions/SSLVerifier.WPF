@@ -1,4 +1,4 @@
-﻿namespace SSLVerifier.API.ModelObjects {
+﻿namespace SSLVerifier.Core.Processor {
 	public enum ServerStatusEnum {
 		Unknown,
 		Valid,

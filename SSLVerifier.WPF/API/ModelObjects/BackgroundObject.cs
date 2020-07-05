@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using SSLVerifier.Core;
 
 namespace SSLVerifier.API.ModelObjects {
 	class BackgroundObject {
 		public ObservableCollection<ServerObject> Servers { get; set; }
-		public StatusCounter Counters { get; set; }
-		public Int32 Threshold { get; set; }
+		public IStatusCounter Counters { get; set; }
 		public Boolean SingleScan { get; set; }
 	}
 }

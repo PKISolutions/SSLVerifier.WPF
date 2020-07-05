@@ -3,6 +3,7 @@ using System.Windows;
 using System.Windows.Input;
 using SSLVerifier.API.ModelObjects;
 using SSLVerifier.API.ViewModels;
+using SSLVerifier.Core.Models;
 
 namespace SSLVerifier.Views.UserControls {
 	/// <summary>

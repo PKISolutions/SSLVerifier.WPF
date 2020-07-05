@@ -1,4 +1,5 @@
 ﻿using System;
+using SSLVerifier.Core.Models;
 
 namespace SSLVerifier.API.ModelObjects {
 	class ReportObject {
