@@ -101,6 +101,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="API\Extensions\IEnumerableExtensions.cs" />
     <Compile Include="API\Functions\WindowsUI.cs" />
     <Compile Include="API\ModelObjects\SslProtocolEnablerModel.cs" />
     <Compile Include="API\ViewModels\SettingsVM.cs" />
@@ -112,7 +113,6 @@
     </Compile>
     <Compile Include="API\Extensions\X509ChainElementCollectionEx.cs" />
     <Compile Include="API\MainLogic\CertProcessor.cs" />
-    <Compile Include="API\MainLogic\Tools.cs" />
     <Compile Include="API\MainLogic\X509ChainStatusFlags2.cs" />
     <Compile Include="API\MainLogic\XmlRoutine.cs" />
     <Compile Include="API\ModelObjects\BackgroundObject.cs" />
