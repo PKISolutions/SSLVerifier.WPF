@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text;
-using SSLVerifier.API.ViewModels;
 using SSLVerifier.Core;
+using SysadminsLV.WPF.OfficeTheme.Toolkit.ViewModels;
 
 namespace SSLVerifier.API.ModelObjects {
     public class ServerLogWriter : ViewModelBase, IServerLogWriter {

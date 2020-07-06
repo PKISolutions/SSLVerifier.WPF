@@ -1,11 +1,19 @@
 ﻿using System;
-using System.Collections.ObjectModel;
-using SSLVerifier.Core;
+using System.Collections.Generic;
 
 namespace SSLVerifier.API.ModelObjects {
-	class BackgroundObject {
-		public ObservableCollection<ServerObject> Servers { get; set; }
-		public IStatusCounter Counters { get; set; }
-		public Boolean SingleScan { get; set; }
-	}
+    class BackgroundObject {
+
+        public BackgroundObject() { }
+        public BackgroundObject(IEnumerable<ServerObject> collection) {
+            if (collection != null) {
+                foreach (ServerObject item in collection) {
+                    Servers.Add(item);
+                }
+            }
+        }
+
+        public IList<ServerObject> Servers { get; } = new List<ServerObject>();
+        public Boolean SingleScan { get; set; }
+    }
 }

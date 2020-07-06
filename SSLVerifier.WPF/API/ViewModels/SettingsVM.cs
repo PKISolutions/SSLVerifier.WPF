@@ -7,6 +7,7 @@ using System.Windows.Input;
 using SSLVerifier.API.ModelObjects;
 using SSLVerifier.Properties;
 using SysadminsLV.WPF.OfficeTheme.Toolkit.Commands;
+using SysadminsLV.WPF.OfficeTheme.Toolkit.ViewModels;
 
 namespace SSLVerifier.API.ViewModels {
     class SettingsVM : ViewModelBase {

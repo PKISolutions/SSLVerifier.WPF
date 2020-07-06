@@ -3,6 +3,7 @@ using System.Windows;
 using System.Windows.Input;
 using SysadminsLV.WPF.OfficeTheme.Toolkit;
 using SysadminsLV.WPF.OfficeTheme.Toolkit.Commands;
+using SysadminsLV.WPF.OfficeTheme.Toolkit.ViewModels;
 
 namespace SSLVerifier.API.ViewModels {
     class AddServerVM : ViewModelBase {

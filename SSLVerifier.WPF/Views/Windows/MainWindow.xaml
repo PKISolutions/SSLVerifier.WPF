@@ -193,35 +193,35 @@
             <StatusBarItem>
                     <TextBlock Foreground="Navy">
                         <Run Text="Total:"/>
-                        <Run Text="{Binding Servers.Count, Mode=OneWay}"/>
+                        <Run Text="{Binding ServerList.Servers.Count, Mode=OneWay}"/>
                     </TextBlock>
             </StatusBarItem>
             <Separator BorderBrush="#93B0D5" BorderThickness="1,0,0,0"/>
             <StatusBarItem>
                 <TextBlock Foreground="Black">
                     <Run Text="Unknown:"/>
-                    <Run Text="{Binding StatCounter.Unknown}"/>
+                    <Run Text="{Binding ServerList.Unknown, Mode=OneWay}"/>
                 </TextBlock>
             </StatusBarItem>
             <Separator BorderBrush="#93B0D5" BorderThickness="1,0,0,0"/>
             <StatusBarItem>
                 <TextBlock Foreground="LimeGreen">
                     <Run Text="Valid:"/>
-                    <Run Text="{Binding StatCounter.Valid}"/>
+                    <Run Text="{Binding ServerList.Valid, Mode=OneWay}"/>
                 </TextBlock>
             </StatusBarItem>
             <Separator BorderBrush="#93B0D5" BorderThickness="1,0,0,0"/>
             <StatusBarItem>
                 <TextBlock Foreground="Orange">
                     <Run Text="Warning:"/>
-                    <Run Text="{Binding StatCounter.Pending}"/>
+                    <Run Text="{Binding ServerList.Pending, Mode=OneWay}"/>
                 </TextBlock>
             </StatusBarItem>
             <Separator BorderBrush="#93B0D5" BorderThickness="1,0,0,0"/>
             <StatusBarItem>
                 <TextBlock Foreground="Red">
                     <Run Text="Failed:"/>
-                    <Run Text="{Binding StatCounter.Failed}"/>
+                    <Run Text="{Binding ServerList.Failed, Mode=OneWay}"/>
                 </TextBlock>
             </StatusBarItem>
             <Separator BorderBrush="#93B0D5" BorderThickness="1,0,0,0"/>

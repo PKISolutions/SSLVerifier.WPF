@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Security.Authentication;
-using SSLVerifier.API.ViewModels;
+using SysadminsLV.WPF.OfficeTheme.Toolkit.ViewModels;
 
 namespace SSLVerifier.API.ModelObjects {
     class SslProtocolEnablerModel : ViewModelBase {

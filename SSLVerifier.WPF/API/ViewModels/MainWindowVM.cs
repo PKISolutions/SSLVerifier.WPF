@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Security.Cryptography.X509Certificates;
 using System.Windows;
@@ -14,6 +13,7 @@ using SSLVerifier.Core.Processor;
 using SSLVerifier.Views.Windows;
 using SysadminsLV.WPF.OfficeTheme.Toolkit;
 using SysadminsLV.WPF.OfficeTheme.Toolkit.Commands;
+using SysadminsLV.WPF.OfficeTheme.Toolkit.ViewModels;
 
 namespace SSLVerifier.API.ViewModels {
     class MainWindowVM : ViewModelBase {
@@ -22,14 +22,11 @@ namespace SSLVerifier.API.ViewModels {
         ServerObject selectedItem;
         Int32 selectedIndex, threshold = 30, tbPort = 443;
         Double progress, progressWidth;
-        ChainElement selectedTreeElement, chain;
+        ChainElement selectedTreeElement;
         Visibility progressVisible;
 
         public MainWindowVM() {
             initCommands();
-            Servers = new ObservableCollection<ServerObject>();
-            StatCounter = new StatusCounter();
-            StatCounter.Refresh(0);
         }
 
         void initCommands() {
@@ -72,7 +69,7 @@ namespace SSLVerifier.API.ViewModels {
         public ICommand ShowSettings { get; set; }
         #endregion
 
-        public ObservableCollection<ServerObject> Servers { get; set; }
+        public ServerListContainer ServerList { get; } = new ServerListContainer();
 
 
         public Boolean IsSaved {
@@ -146,7 +143,6 @@ namespace SSLVerifier.API.ViewModels {
                 OnPropertyChanged(nameof(ProgressWidth));
             }
         }
-        public IStatusCounter StatCounter { get; set; }
         public ServerObject SelectedItem {
             get => selectedItem;
             set {
@@ -173,8 +169,7 @@ namespace SSLVerifier.API.ViewModels {
             if (testSaved()) {
                 LastSavedFile = String.Empty;
                 IsSaved = true;
-                Servers.Clear();
-                StatCounter.Refresh(Servers.Count);
+                ServerList.Servers.Clear();
             }
         }
         void openList(Object obj) {
@@ -189,11 +184,10 @@ namespace SSLVerifier.API.ViewModels {
                 try {
                     XmlObject list = XmlRoutine.Deserialize(dlg.FileName);
                     if (list == null) { return; }
-                    Servers.Clear();
+                    ServerList.Servers.Clear();
                     foreach (ServerObject item in list.ServerObjects) {
-                        Servers.Add(item);
+                        ServerList.Servers.Add(item);
                     }
-                    StatCounter.Refresh(Servers.Count);
                     IsSaved = true;
                 } catch (Exception e) {
                     MsgBox.Show("XML Read error", e.Message);
@@ -203,7 +197,7 @@ namespace SSLVerifier.API.ViewModels {
         void saveList(Object obj) {
             if (String.IsNullOrEmpty(LastSavedFile)) { saveAsList(null); }
             try {
-                XmlRoutine.Serialize(Servers, LastSavedFile);
+                XmlRoutine.Serialize(ServerList.Servers, LastSavedFile);
                 IsSaved = true;
             } catch (Exception e) {
                 MsgBox.Show("XML Write error", e.Message);
@@ -219,7 +213,7 @@ namespace SSLVerifier.API.ViewModels {
             if (result == true) {
                 LastSavedFile = dlg.FileName;
                 try {
-                    XmlRoutine.Serialize(Servers, LastSavedFile);
+                    XmlRoutine.Serialize(ServerList.Servers, LastSavedFile);
                     IsSaved = true;
                 } catch (Exception e) {
                     MsgBox.Show("XML Write error", e.Message);
@@ -236,7 +230,7 @@ namespace SSLVerifier.API.ViewModels {
             if (result == true) {
                 LastSavedFile = dlg.FileName;
                 try {
-                    Servers.SaveAsCSV(dlg.FileName);
+                    ServerList.Servers.SaveAsCSV(dlg.FileName);
                 } catch (Exception e) {
                     MsgBox.Show("CSV Write error", e.Message);
                 }
@@ -307,10 +301,10 @@ namespace SSLVerifier.API.ViewModels {
             return SelectedItem != null;
         }
         Boolean canSaveCsv(Object obj) {
-            return Servers.Count > 0;
+            return ServerList.Servers.Count > 0;
         }
         Boolean canSaveList(Object obj) {
-            return Servers.Count > 0;
+            return ServerList.Servers.Count > 0;
         }
 
         void viewCertificate(Object obj) {
@@ -336,20 +330,19 @@ namespace SSLVerifier.API.ViewModels {
         }
         void addServerAndScan(Object obj) {
             ServerObject server = new ServerObject { ServerAddress = ServerName2.Trim().ToLower().Replace("https://", null), Port = Port2 };
-            Servers.Add(server);
-            StatCounter.Unknown++;
+            ServerList.Servers.Add(server);
             IsSaved = false;
             ServerName2 = String.Empty;
-            SelectedIndex = Servers.Count - 1;
+            SelectedIndex = ServerList.Servers.Count - 1;
             StartSingleScan(null);
         }
         Boolean canAddServerAndScan(Object obj) {
             return !String.IsNullOrEmpty(ServerName2) &&
                 !String.IsNullOrWhiteSpace(ServerName2) &&
-                !Servers.Contains(new ServerObject { ServerAddress = ServerName2.Trim().ToLower().Replace("https://", null), Port = Port2 });
+                !ServerList.Servers.Contains(new ServerObject { ServerAddress = ServerName2.Trim().ToLower().Replace("https://", null), Port = Port2 });
         }
         void prepareScan() {
-            foreach (ServerObject server in Servers) {
+            foreach (ServerObject server in ServerList.Servers) {
                 if (singleScan) {
                     server.CanProcess = false;
                 } else {
@@ -357,24 +350,8 @@ namespace SSLVerifier.API.ViewModels {
                 }
             }
             if (singleScan) {
-                switch (Servers[SelectedIndex].ItemStatus) {
-                    case ServerStatusEnum.Valid:
-                        StatCounter.Valid--;
-                        StatCounter.Unknown++;
-                        break;
-                    case ServerStatusEnum.Pending:
-                        StatCounter.Pending--;
-                        StatCounter.Unknown++;
-                        break;
-                    case ServerStatusEnum.Failed:
-                        StatCounter.Failed--;
-                        StatCounter.Unknown++;
-                        break;
-                }
-                Servers[SelectedIndex].CanProcess = true;
-                Servers[SelectedIndex].ItemStatus = ServerStatusEnum.Unknown;
-            } else {
-                StatCounter.Refresh();
+                ServerList.Servers[SelectedIndex].CanProcess = true;
+                ServerList.Servers[SelectedIndex].ItemStatus = ServerStatusEnum.Unknown;
             }
         }
         void startScan(Object obj) {
@@ -394,12 +371,11 @@ namespace SSLVerifier.API.ViewModels {
             worker.RunWorkerCompleted += endScan;
             worker.ProgressChanged += scanReportChanged;
             // reset statuses
-            BackgroundObject arg = new BackgroundObject {
-                Servers = Servers,
-                Counters = StatCounter,
+            BackgroundObject arg = new BackgroundObject(ServerList.Servers) {
                 SingleScan = singleScan
             };
             worker.RunWorkerAsync(arg);
+            CommandManager.InvalidateRequerySuggested();
         }
         void scanReportChanged(Object sender, ProgressChangedEventArgs e) {
             if (e.UserState == null) {
@@ -407,10 +383,10 @@ namespace SSLVerifier.API.ViewModels {
             } else {
                 switch (((ReportObject)e.UserState).Action) {
                     case "Clear":
-                        Servers[((ReportObject)e.UserState).Index].Tree.Clear();
+                        ServerList.Servers[((ReportObject)e.UserState).Index].Tree.Clear();
                         break;
                     case "Add":
-                        Servers[((ReportObject)e.UserState).Index].Tree.Add(((ReportObject)e.UserState).NewTree);
+                        ServerList.Servers[((ReportObject)e.UserState).Index].Tree.Add(((ReportObject)e.UserState).NewTree);
                         break;
                 }
             }
@@ -419,7 +395,7 @@ namespace SSLVerifier.API.ViewModels {
             Running = singleScan = false;
             ProgressVisible = Visibility.Hidden;
             ProgressWidth = 0;
-            foreach (ServerObject server in Servers) {
+            foreach (ServerObject server in ServerList.Servers) {
                 server.CanProcess = false;
             }
             ((BackgroundWorker)Sender).Dispose();
@@ -427,7 +403,7 @@ namespace SSLVerifier.API.ViewModels {
 
         }
         Boolean canStartScan(Object obj) {
-            return !Running && Servers.Count > 0;
+            return !Running && ServerList.Servers.Count > 0;
         }
 
         static void addServer(Object obj) {
@@ -437,21 +413,7 @@ namespace SSLVerifier.API.ViewModels {
             return !Running;
         }
         void removeServer(Object obj) {
-            switch (SelectedItem.ItemStatus) {
-                case ServerStatusEnum.Unknown:
-                    StatCounter.Unknown--;
-                    break;
-                case ServerStatusEnum.Valid:
-                    StatCounter.Valid--;
-                    break;
-                case ServerStatusEnum.Pending:
-                    StatCounter.Pending--;
-                    break;
-                case ServerStatusEnum.Failed:
-                    StatCounter.Failed--;
-                    break;
-            }
-            Servers.RemoveAt(SelectedIndex);
+            ServerList.Servers.RemoveAt(SelectedIndex);
             IsSaved = false;
         }
         Boolean CanRemoveServer(Object obj) {
@@ -489,12 +451,11 @@ namespace SSLVerifier.API.ViewModels {
         }
         public Boolean AddServerItem(String name, Int32 port) {
             ServerObject obj = new ServerObject { ServerAddress = name.Trim().ToLower().Replace("https://", null), Port = port };
-            if (Servers.Contains(obj)) {
+            if (ServerList.Servers.Contains(obj)) {
                 MsgBox.Show("Error", "Entered server name already in the list.");
                 return false;
             }
-            Servers.Add(obj);
-            StatCounter.Unknown++;
+            ServerList.Servers.Add(obj);
             IsSaved = false;
             return true;
         }

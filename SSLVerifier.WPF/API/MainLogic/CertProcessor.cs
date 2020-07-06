@@ -235,20 +235,6 @@ namespace SSLVerifier.API.MainLogic {
                 temp.NativeErrors |= flag.Status;
             }
         }
-        void changeStatCounter(IStatusCounter counters) {
-            switch (NativeEntry.ItemStatus) {
-                case ServerStatusEnum.Valid:
-                    counters.Valid++;
-                    break;
-                case ServerStatusEnum.Pending:
-                    counters.Pending++;
-                    break;
-                case ServerStatusEnum.Failed:
-                    counters.Failed++;
-                    break;
-            }
-            counters.Unknown--;
-        }
         void getEffectiveStatus() {
             if (globalWarnings) {
                 NativeEntry.ItemStatus = ServerStatusEnum.Pending;
@@ -293,7 +279,6 @@ namespace SSLVerifier.API.MainLogic {
 
                 // calculate resulting status of the object
                 getEffectiveStatus();
-                changeStatCounter(background.Counters);
                 // release resources and close connections
                 NativeEntry.Log.AppendLine("Finished!");
                 NativeEntry.Log.Progress = 100;

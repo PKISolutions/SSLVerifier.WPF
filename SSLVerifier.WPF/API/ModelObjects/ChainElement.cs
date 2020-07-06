@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Security.Cryptography.X509Certificates;
-using SSLVerifier.API.ViewModels;
 using SSLVerifier.Core.Processor;
+using SysadminsLV.WPF.OfficeTheme.Toolkit.ViewModels;
 
 namespace SSLVerifier.API.ModelObjects {
     public sealed class ChainElement : ViewModelBase {

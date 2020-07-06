@@ -25,7 +25,14 @@
                      ToolTip="Enter server name or IP"
                      Text="{Binding ServerName, UpdateSourceTrigger=PropertyChanged}"/>
             <TextBlock Text=" :" VerticalAlignment="Center"/>
-            <ComboBox Text="{Binding Port}" ToolTip="Server port" SelectedValuePath="Content" Width="60" IsEditable="True" IsReadOnly="False" Margin="0,0,10,0">
+            <ComboBox Text="{Binding Port}"
+                      ToolTip="Server port"
+                      SelectedValuePath="Content"
+                      Width="60"
+                      IsEditable="True"
+                      IsReadOnly="False"
+                      SelectedIndex="1"
+                      Margin="0,0,10,0">
                 <ComboBoxItem>
                     <system:Int32>25</system:Int32>
                 </ComboBoxItem>

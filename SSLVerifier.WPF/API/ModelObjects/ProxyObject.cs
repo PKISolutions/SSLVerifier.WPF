@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Security;
-using SSLVerifier.API.ViewModels;
 using SSLVerifier.Core;
+using SysadminsLV.WPF.OfficeTheme.Toolkit.ViewModels;
 
 namespace SSLVerifier.API.ModelObjects {
     class ProxyObject : ViewModelBase, IServerProxy {

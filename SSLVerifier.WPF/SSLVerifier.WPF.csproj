@@ -105,6 +105,7 @@
     <Compile Include="API\Functions\WindowsUI.cs" />
     <Compile Include="API\MainLogic\ServerObjectWrapper.cs" />
     <Compile Include="API\ModelObjects\CertProcessorConfig.cs" />
+    <Compile Include="API\ModelObjects\ServerListContainer.cs" />
     <Compile Include="API\ModelObjects\SslProtocolEnablerModel.cs" />
     <Compile Include="API\ViewModels\SettingsVM.cs" />
     <Compile Include="Views\Windows\About.xaml.cs">
@@ -120,10 +121,8 @@
     <Compile Include="API\ModelObjects\ProxyObject.cs" />
     <Compile Include="API\ModelObjects\ReportObject.cs" />
     <Compile Include="API\ModelObjects\ServerLogWriter.cs" />
-    <Compile Include="API\ModelObjects\StatusCounter.cs" />
     <Compile Include="API\ModelObjects\XmlObject.cs" />
     <Compile Include="API\ViewModels\AddServerVM.cs" />
-    <Compile Include="API\ViewModels\ViewModelBase.cs" />
     <Compile Include="Views\Windows\LicenseWindow.xaml.cs">
       <DependentUpon>LicenseWindow.xaml</DependentUpon>
     </Compile>
