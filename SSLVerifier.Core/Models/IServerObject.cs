@@ -8,7 +8,7 @@ namespace SSLVerifier.Core.Models {
         String ServerAddress { get; }
         Int32 Port { get; }
         IServerProxy Proxy { get; }
-        ServerStatusEnum ItemStatus { set; }
+        ServerStatusEnum ItemStatus { get; set; }
         IServerLogWriter Log { get; }
         ObservableCollection<String> SAN { get; }
         X509ChainStatusFlags2 ChainStatus { get; set; }

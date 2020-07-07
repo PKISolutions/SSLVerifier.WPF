@@ -1,0 +1,462 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="HTML_CERT_CHAIN" xml:space="preserve">
+    <value>&lt;button type="button" class="collapsible collapsible2"&gt;&lt;strong&gt;{0}&lt;/strong&gt;&lt;/button&gt;
+        &lt;div class="content"&gt;{1}&lt;/div&gt;</value>
+  </data>
+  <data name="HTML_CERT_DUMP" xml:space="preserve">
+    <value>&lt;div&gt;
+                &lt;h3&gt;Certificate #{0}&lt;/h3&gt;
+                &lt;table class="table"&gt;
+                    &lt;tbody&gt;
+                        &lt;tr&gt;
+                            &lt;td class="bold"&gt;Subject&lt;/td&gt;
+                            &lt;td&gt;{1}&lt;/td&gt;
+                        &lt;/tr&gt;
+                        &lt;tr&gt;
+                            &lt;td class="bold"&gt;Alternative Names&lt;/td&gt;
+                            &lt;td&gt;{2}&lt;/td&gt;
+                        &lt;/tr&gt;
+                        &lt;tr&gt;
+                            &lt;td class="bold"&gt;Serial Number&lt;/td&gt;
+                            &lt;td&gt;{3}&lt;/td&gt;
+                        &lt;/tr&gt;
+                        &lt;tr&gt;
+                            &lt;td class="bold"&gt;Valid From&lt;/td&gt;
+                            &lt;td&gt;{4}&lt;/td&gt;
+                        &lt;/tr&gt;
+                        &lt;tr&gt;
+                            &lt;td class="bold"&gt;Valid To&lt;/td&gt;
+                            &lt;td&gt;{5}&lt;/td&gt;
+                        &lt;/tr&gt;
+                        &lt;tr&gt;
+                            &lt;td class="bold"&gt;Public Key&lt;/td&gt;
+                            &lt;td&gt;{6}&lt;/td&gt;
+                        &lt;/tr&gt;
+                        &lt;tr&gt;
+                            &lt;td class="bold"&gt;Issuer&lt;/td&gt;
+                            &lt;td&gt;{7}&lt;/td&gt;
+                        &lt;/tr&gt;
+                        &lt;tr&gt;
+                            &lt;td class="bold"&gt;Signature algorithm&lt;/td&gt;
+                            &lt;td&gt;{8}&lt;/td&gt;
+                        &lt;/tr&gt;
+                        &lt;tr&gt;
+                            &lt;td class="bold"&gt;Thumbprint&lt;/td&gt;
+                            &lt;td&gt;{9}&lt;/td&gt;
+                        &lt;/tr&gt;
+                        &lt;tr&gt;
+                            &lt;td class="bold danger"&gt;Errors&lt;/td&gt;
+                            &lt;td class="danger"&gt;{10}&lt;/td&gt;
+                        &lt;/tr&gt;
+                        &lt;tr&gt;
+                            &lt;td class="bold"&gt;Certificate&lt;/td&gt;
+                            &lt;td&gt;
+                                &lt;div class="cert-dump"&gt;
+                                    &lt;pre&gt;{11}&lt;/pre&gt;
+                                &lt;/div&gt;
+                            &lt;/td&gt;
+                        &lt;/tr&gt;
+                    &lt;/tbody&gt;
+                &lt;/table&gt;
+            &lt;/div&gt;</value>
+  </data>
+  <data name="HTML_COUNT_SUMMARY" xml:space="preserve">
+    <value>&lt;span class="default"&gt;Total: {0}&lt;/span&gt;|
+                    &lt;span&gt;Unknown: {1}&lt;/span&gt;|
+                    &lt;span class="success"&gt;Valid: {2}&lt;/span&gt;|
+                    &lt;span class="warning"&gt;Warning: {3}&lt;/span&gt;|
+                    &lt;span class="danger"&gt;Failed: {4}&lt;/span&gt;</value>
+  </data>
+  <data name="HTML_ENTRY_CERT_ALL" xml:space="preserve">
+    <value>&lt;button type="button" class="collapsible collapsible1"&gt;&lt;strong&gt;{0}&lt;/strong&gt;&lt;/button&gt;
+    &lt;div class="content"&gt;
+        &lt;p&gt;Tables below outline certificate chains for all automatic redirects.&lt;/p&gt;
+        {1}
+    &lt;/div&gt;</value>
+  </data>
+  <data name="HTML_MAIN_ROW" xml:space="preserve">
+    <value>&lt;tr class="{0}"&gt;
+                &lt;td width="16px"&gt;
+                    &lt;img src="data:image/png;base64, {1}" alt="" /&gt;
+                &lt;/td&gt;
+                &lt;td&gt;{2}&lt;/td&gt;
+                &lt;td class="center"&gt;{3}&lt;/td&gt;
+                &lt;td&gt;{4}&lt;/td&gt;
+                &lt;td class="center"&gt;{5}&lt;/td&gt;
+                &lt;td class="center"&gt;{6}&lt;/td&gt;
+                &lt;td class="center"&gt;{7}&lt;/td&gt;
+            &lt;/tr&gt;</value>
+  </data>
+  <data name="HTML_REPORT" xml:space="preserve">
+    <value>&lt;!DOCTYPE html&gt;
+
+&lt;html lang="en" xmlns="http://www.w3.org/1999/xhtml"&gt;
+&lt;head&gt;
+    &lt;meta charset="utf-8" /&gt;
+    &lt;meta http-equiv="Content-Type" content="text/html; charset=utf-8" /&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0" /&gt;
+    &lt;title&gt;SSL Certificate Verifier Report&lt;/title&gt;
+    &lt;style type="text/css"&gt;
+        @media print {{
+            .cert-dump {{
+            }}
+        }}
+
+        body {{
+            font: 11pt "Arial";
+        }}
+
+        pre {{
+            font: 9pt "Consolas", "Monospace";
+        }}
+
+        .table {{
+            width: 100%;
+            border: solid 1px silver;
+            border-spacing: 0;
+            border-collapse: separate;
+        }}
+
+        th {{
+            background-color: navy;
+            color: white;
+            padding: 8px;
+        }}
+        td {{
+            padding: 2px 4px;
+        }}
+        .table td {{
+            border-top: solid 1px silver;
+            padding: 3px;
+        }}
+
+        tfoot {{
+            background-color: ghostwhite;
+            border-top: solid 1px silver;
+        }}
+
+        .border-top {{
+            border-top: solid 1px silver;
+        }}
+
+        h1 {{
+            text-align: center;
+        }}
+
+        #header {{
+            color: white;
+            background-color: navy;
+            font-size: 18pt;
+            font-weight: bold;
+            text-align: center;
+            padding: 1px;
+        }}
+
+        .meta {{
+            border: solid 1px silver;
+            padding: 0 5px;
+        }}
+
+        .default {{
+            color: navy;
+        }}
+
+        .success {{
+            color: green;
+        }}
+
+        .danger {{
+            color: red;
+        }}
+
+        .warning {{
+            color: orange;
+        }}
+
+        .center {{
+            text-align: center;
+        }}
+
+        .small {{
+            font-size: 9pt;
+        }}
+
+        .bold {{
+            font-weight: bold;
+        }}
+
+        .collapsible {{
+            cursor: pointer;
+            padding: 18px;
+            width: 100%;
+            border: none;
+            text-align: left;
+            outline: none;
+            font-size: 14pt;
+        }}
+
+        .collapsible1 {{
+            background-color: #A0BACB;
+        }}
+
+        .collapsible2 {{
+            padding: 8px;
+            font-size: 12pt;
+            background-color: #D9E3EA;
+        }}
+
+        .active, .collapsible1:hover {{
+            background-color: #7197B3;
+        }}
+
+        .active, .collapsible2:hover {{
+            background-color: #C0D2DE;
+        }}
+
+        .content {{
+            padding: 5px 18px;
+            display: none;
+            overflow: hidden;
+            border: solid 1px #A0BACB;
+        }}
+
+        .cert-dump {{
+            height: auto;
+            max-height: 200px;
+            overflow: auto;
+        }}
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div id="header"&gt;
+        &lt;p&gt;SSL Certificate Verifier Report&lt;/p&gt;
+    &lt;/div&gt;
+    &lt;div class="meta small"&gt;
+        &lt;table&gt;
+            &lt;tbody&gt;
+                {0}
+            &lt;/tbody&gt;
+        &lt;/table&gt;
+    &lt;/div&gt;
+    &lt;h1&gt;Report Summary&lt;/h1&gt;
+    &lt;table class="table"&gt;
+        &lt;thead&gt;
+            &lt;tr&gt;
+                &lt;th&gt;&lt;/th&gt;
+                &lt;th&gt;Server Address&lt;/th&gt;
+                &lt;th&gt;Port&lt;/th&gt;
+                &lt;th&gt;Certificate Name&lt;/th&gt;
+                &lt;th&gt;Valid From&lt;/th&gt;
+                &lt;th&gt;Valid To&lt;/th&gt;
+                &lt;th&gt;Days Left&lt;/th&gt;
+            &lt;/tr&gt;
+        &lt;/thead&gt;
+        &lt;tbody&gt;
+            {1}
+        &lt;/tbody&gt;
+        &lt;tfoot&gt;
+            &lt;tr&gt;
+                &lt;td&gt;&lt;/td&gt;
+                &lt;td colspan="6"&gt;
+                    {2}
+                &lt;/td&gt;
+            &lt;/tr&gt;
+        &lt;/tfoot&gt;
+    &lt;/table&gt;
+
+    &lt;h1&gt;Certificate Details&lt;/h1&gt;
+        {3}
+    &lt;hr /&gt;
+    &lt;p class="small center"&gt;
+        &lt;a href="https://www.pkisolutions.com/"&gt;PKI Solutions Inc&lt;/a&gt;. | &lt;a href="https://www.pkisolutions.com/tools/sslcertverifier/"&gt;SSL Certificate Verifier&lt;/a&gt;
+    &lt;/p&gt;
+
+    &lt;script&gt;
+        var coll = document.getElementsByClassName("collapsible");
+        var i;
+
+        for (i = 0; i &lt; coll.length; i++) {{
+            coll[i].addEventListener("click",
+                function () {{
+                    this.classList.toggle("active");
+                    var content = this.nextElementSibling;
+                    if (content.style.display === "block") {{
+                        content.style.display = "none";
+                    }} else {{
+                        content.style.display = "block";
+                    }}
+                }});
+        }}
+    &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</value>
+  </data>
+  <data name="HTML_REPORT_META" xml:space="preserve">
+    <value>&lt;tr&gt;
+                    &lt;td&gt;Report generated at:&lt;/td&gt;
+                    &lt;td&gt;{0}&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                    &lt;td&gt;Allow User Root Store:&lt;/td&gt;
+                    &lt;td&gt;{1}&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                    &lt;td&gt;Allowed TLS Versions:&lt;/td&gt;
+                    &lt;td&gt;{2}&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                    &lt;td&gt;Weak RSA Key Check:&lt;/td&gt;
+                    &lt;td&gt;{3}&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                    &lt;td&gt;Weak RSA Key Length:&lt;/td&gt;
+                    &lt;td&gt;{4}&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                    &lt;td&gt;Strict EKU Check:&lt;/td&gt;
+                    &lt;td&gt;{5}&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                    &lt;td&gt;Expiration threshold:&lt;/td&gt;
+                    &lt;td&gt;{6} days&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                    &lt;td&gt;Weak Algorithm Check:&lt;/td&gt;
+                    &lt;td&gt;{7}&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                    &lt;td&gt;Weak Algorithms:&lt;/td&gt;
+                    &lt;td&gt;{8}&lt;/td&gt;
+                &lt;/tr&gt;</value>
+  </data>
+  <data name="IMG_BAD" xml:space="preserve">
+    <value>iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAC1UlEQVR42qWTa0iTURjH/9tE58x027upaXMuNxlT00XgDfripRtioKEYCUuExVSypA8REX4wppsXCqlFmGZWkEEGZoJDiBqB5RRv09Lyks3pnDhFc1tny4bYR194OJznnOf3nv9zoWHPV3GlIpMsWcRSiEl33KPEPhDr1tZp3+2+T9sVKCSLikvxlOERAlZIaBjYwRzPmXVlGb8WfmJu9sf6kmWxibjuEtC0F7ATXCWWSC/IIqPAta2A8W0Szu/T+L21hW02Gw7iXxMdwfjcLCZMo0/I/ZtuyD9ALQm+mkxRoPp6ERglxHxjA3wPhWPL4YB9dgZBeXlwWldhzTqNL6s2N0RDANdobs3k2a/SEo+zxO/1YF9SgCkSYaGqClPV1XDABa7yMoI1GjhNJti0dVg4lQ3DsNEt55wboIlPOFYhJ2qofgMYcjn4RUUe7V9LS2FbWwP/XhMCWUxM19eju60Nabn5mAgLw+BAv9YN+Jhx8mxSRJ8e67r7YEYKwFcqwVEosLG5CYtlCf58HsyNjXhZWYlQGg2xefnYUBSj5+0bgxuwcj7/YpCv9g62x8dgNRrh8PFBdE0N/IqL4Uenw6LTob28HCLyKh7Zs2JjcUDXghfPWmxeAL36Nsydr7FOkkalp4NXUABuYSFcZL/R2YmesjJwzGb4EECwTIaAh61egEdC8POnmG1+BE5kJELUavByc7HQ2wsn+WtASgr89Xp0l5RAMD8PZnYO7EqVV4InieKZGTh6ukCpVOCT4EWDAS3JyThMAJmDg+DHxWG7qwsPcnJw4sYtjAuF3iR6ypgkO8qyt7dCII1BaGoqGjIyICHBFLFlkpMzQ0OY6ujASPNjRKi1MIwM/S3j7kaK8fODtVYN5+gwVl0uuBvZf8fGiPaDMVJIKq/jE6mOt5H2trKYzABzYAAu42c4Jk2gkwNGtASMRDns8QkwkZn4r5X3PUz7Gec//nNM3G7dD3IAAAAASUVORK5CYII=</value>
+  </data>
+  <data name="IMG_BLANK" xml:space="preserve">
+    <value>iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAadEVYdFNvZnR3YXJlAFBhaW50Lk5FVCB2My41LjEwMPRyoQAAADZJREFUOE+lyLERACAAAyH3XzouQOGfBQ1n2xdmwSyYBbNgFsyCWTALZsEsmAWzYBbMgvlu5wLFrf0f6I7L7gAAAABJRU5ErkJggg==</value>
+  </data>
+  <data name="IMG_OK" xml:space="preserve">
+    <value>iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAC1UlEQVR42qWTa0iTURjH/+82dczhZXm/pDErL1leKkUoE5tlNxVMhERNI+gi5pQEsS8GIZH2QUso/BJdTC0rlNIMJNI0qLahLTIv2bxMzXkJ9d3e913nnbbEPnrg4cA55/97znOe/6GwbigLlAlkOkQihkTQ6rKWRBeJ1sqblW1rz1NrhP5kurjJxfWct89mibuHJ5ydZJY9w+wM9BPjGNWNLP6anqohS9UENGwFrIqvbt0WlOEf4odp2TCGqV5Mcj/AMCxcTH7whBw+dCBGe0fR/017n5y/wkP+Am4QcaFvlAfU4jcYZDQwm8xgWA6MiSEQDqn+uXAReMOgW8akapqHVBBAEcXXTK7dFLY/XPLJ8SWGiHhFyIIlYhO5gVTshGx5PmLdEpHffgYHhano69bw5aTwgIqdYZFKNmwGb40NYFkWJtNKZpZAKKEAyf6ZyJTnQTXbgwvPspDscxpuY77QqD5W8oD3isPHojudH+O7UQ2W4TNzlmA4Dnt8D6A0tAKsmUH6ozT0zXchwjkGWbJLeP2quZsHzKalZzrW0ErQ1DIoMwXDnAEzSwuQ2NujNOI64tyP4sVoHYqbSrAgnIJM5IrasOeor7s3ZwXcogsR73cEibIM5HVkQ7ukxqmAHFwOL4ORMyKp9gQG8Bk0twAnkQvuhjZbAZYSGqVVKNtRDS8HLyyyvxH3MArXFOWW7C3j9ShoLALrYCB95xApjUWuQ7G1BMsj/tzyFe1jLWg72QVbgR1ax58iwTMFRpbG8TtJGBD3QGBHQyACqb8E3mNy6yNa2hgYHSJ5tHgbg/oRfMjRQEgJiUPMaNI9gPJJEWw85iCyA3aLFUixOQttT+9KG9caSRpoj/rJWvTrh6E634tOQzvKG6owIH0HsSOHvdJ4KESZmP8y/89I663sFuAO9XIPuqY6oKOHYCs1I9g1GLsk+7DdGAl9/8T/Vt7wZ9rId/4DyVFy3Mxni90AAAAASUVORK5CYII=</value>
+  </data>
+  <data name="IMG_WARN" xml:space="preserve">
+    <value>iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAACEElEQVR42p2STU8TURSGz51Op820tbRCCKgUME4DRg0RUUyIH4mJutDEFZE9if4CYK/wCzC6x7gzcYMLP1ZaQ9JEY6xSTRoKiFSlkUJiOx/X956phqgVw928nXvnfc4zMxXUYM3dax5EPKhfXhoY/pL5233iH4D5SCJmhWMR+lr8lAcg/d8AlM8jZtNDfaSHDMo9niMp5QVAHm4LQDmAyEV3N1kHTh7mveKrPFvgZy8g7naAq9id6TnVT+GYyXv29yq9ecQWIwDcbQhA2UC8jrcmre7jxyhozviAzSuweA+LFWVxCJBaI8A1IcR0z5l+CplhCkbv835t/TI5yuJpVllcB+DWHwCUo4hsor3F6uyzSHqSjLj/FWvli5zLbxfoc3FVWRwFZON3wJjQtMmDp/HmDR0Aj0LJWT6rls5xOrZNuWc5dTYOwNQvAMpJRKalo9Vq62zm6XCliRsFLt6cSNV9Ba0urVFpoaQsBgFZ+wmYDOiBsfSRfSQ8h8hz1bPWOxqRpvkApCcFvXu5qCymABgXKO/B0ZP2jqQVj2CwYwPgscGugSL3KtluIl0HTLBFed2llcWysjirALeDhj66P2WStKtELv4n0lN9ahoqMeDb8zaeLrQAX0vkh8ImbvXuKMB8qithhd0NTHe4zG2x9Qv7k/03JtikIk36uFzJK0CmsGSfoB2srr3BF2Inxa3rB5Vr4X0IUpA/AAAAAElFTkSuQmCC</value>
+  </data>
+</root>

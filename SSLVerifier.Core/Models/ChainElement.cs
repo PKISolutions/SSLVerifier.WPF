@@ -8,8 +8,8 @@ namespace SSLVerifier.Core.Models {
         public String Name { get; set; }
         public X509Certificate2 Certificate { get; set; }
         public IChainElement Parent { get; set; }
-        public String NativeErrorString { get; }
-        public String PropagatedErrorString { get; }
+        public String NativeErrorString => NativeErrors.ToString();
+        public String PropagatedErrorString => PropagatedErrors.ToString();
         public ObservableCollection<IChainElement> Child { get; }
             = new ObservableCollection<IChainElement>();
         public Boolean IsRoot { get; set; }

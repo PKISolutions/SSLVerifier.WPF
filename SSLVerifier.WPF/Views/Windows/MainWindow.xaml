@@ -134,7 +134,6 @@
                 <Button Command="{Binding AddServerCommand}"  ToolTip="Add new server (+ (NumPad))">
                     <Image Source="/Views/Images/Menu/add_16x16.png"/>
                 </Button>
-                <Separator/>
                 <Button Command="{Binding RemoveServerCommand}" ToolTip="Remove selected server (Del)">
                     <Image Source="/Views/Images/Menu/remove_16x16.png" />
                 </Button>
@@ -142,9 +141,12 @@
                 <Button Command="{Binding StartScanAsyncCommand}" CommandParameter="1" ToolTip="Scan selected item (Ctrl+E)">
                     <Image Source="/Views/Images/Menu/start_16x16.png"/>
                 </Button>
-                <Separator/>
                 <Button Command="{Binding StartScanAsyncCommand}" CommandParameter="0" ToolTip="Scan all entries (F5)">
                     <Image Source="/Views/Images/Menu/playall_16x16.png" Width="16" Height="16"/>
+                </Button>
+                <Separator/>
+                <Button Command="{Binding SaveReportCommand}" ToolTip="Save HTML Report">
+                    <Image Source="/Views/Images/Menu/html_16x16.png" Width="16"/>
                 </Button>
             </ToolBar>
             <ToolBar Foreground="Navy">

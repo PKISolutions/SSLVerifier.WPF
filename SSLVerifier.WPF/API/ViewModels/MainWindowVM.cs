@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading;
@@ -12,6 +13,7 @@ using SSLVerifier.API.Functions;
 using SSLVerifier.API.MainLogic;
 using SSLVerifier.API.ModelObjects;
 using SSLVerifier.Core;
+using SSLVerifier.Core.Data;
 using SSLVerifier.Core.Models;
 using SSLVerifier.Core.Processor;
 using SSLVerifier.Views.Windows;
@@ -44,14 +46,12 @@ namespace SSLVerifier.API.ViewModels {
             RemoveServerCommand = new RelayCommand(removeServer, CanRemoveServer);
             StartScanAsyncCommand = new AsyncCommand(startScanAsync, canStartScan);
             AddAndScanAsyncCommand = new AsyncCommand(addAndStartAsync, canAddAndScan);
-            //StartSingleScanCommand = new RelayCommand(StartSingleScan, canStartSingleScan);
-            //StartSingleScan2Command = new RelayCommand(addServerAndScan, canAddServerAndScan);
-            //StartScanCommand = new RelayCommand(startScan, canStartScan);
             ShowAboutCommand = new RelayCommand(ShowAbout);
             ShowEntryProperties = new RelayCommand(showProperties, canShowProperties);
             ShowSettings = new RelayCommand(showSettings);
             SaveCsvCommand = new RelayCommand(saveAsCsv, canSaveCsv);
             ShowLicenseCommand = new RelayCommand(ShowLicense);
+            SaveReportCommand = new RelayCommand(saveHtmlReport);
         }
 
         #region Commands
@@ -71,6 +71,7 @@ namespace SSLVerifier.API.ViewModels {
         public ICommand ShowLicenseCommand { get; set; }
         public ICommand ShowEntryProperties { get; set; }
         public ICommand ShowSettings { get; set; }
+        public ICommand SaveReportCommand { get; set; }
         #endregion
 
         public ServerListContainer ServerList { get; } = new ServerListContainer();
@@ -330,11 +331,13 @@ namespace SSLVerifier.API.ViewModels {
                 } else {
                     server.CanProcess = true;
                     server.ItemStatus = ServerStatusEnum.Unknown;
+                    server.Tree.Clear();
                 }
             }
             if (singleScan) {
                 SelectedItem.CanProcess = true;
                 SelectedItem.ItemStatus = ServerStatusEnum.Unknown;
+                SelectedItem.Tree.Clear();
             }
         }
 
@@ -358,7 +361,7 @@ namespace SSLVerifier.API.ViewModels {
                     var certVerifier = new CertProcessor(new CertProcessorConfig { Threshold = Threshold });
                     await certVerifier.StartScan(x, uiContext);
                 });
-            
+
             endScan();
         }
 
@@ -394,7 +397,22 @@ namespace SSLVerifier.API.ViewModels {
                 ? SelectedItem != null
                 : !Running && ServerList.Servers.Count > 0;
         }
-
+        void saveHtmlReport(Object o) {
+            SaveFileDialog dlg = new SaveFileDialog {
+                FileName = "SSL Report.htm",
+                DefaultExt = ".htm",
+                Filter = "Webpage (.htm)|*.htm"
+            };
+            Boolean? result = dlg.ShowDialog();
+            if (result == true) {
+                try {
+                    var proc = new HtmlProcessor(ServerList.Servers.Cast<IServerObject>().ToList(), new CertProcessorConfig { Threshold = Threshold });
+                    File.WriteAllText(dlg.FileName, proc.GenerateReport());
+                } catch (Exception e) {
+                    MsgBox.Show("CSV Write error", e.Message);
+                }
+            }
+        }
         static void addServer(Object obj) {
             WindowsUI.ShowWindow<AddServerWindow>();
         }

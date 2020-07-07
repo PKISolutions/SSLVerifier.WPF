@@ -128,10 +128,11 @@ namespace SSLVerifier.Core.Processor {
                         entry.InternalChain.ChainPolicy.ExtraStore.Add(chain.ChainElements[index].Certificate);
                     }
                 }
-                if (((Int32)sslPolicyErrors & (Int32)SslPolicyErrors.RemoteCertificateNameMismatch) == 0) {
-                    entry.ServerObject.ChainStatus |= X509ChainStatusFlags2.NameMismatch;
-                }
+                Boolean hasNameMismatch = ((Int32)sslPolicyErrors & (Int32)SslPolicyErrors.RemoteCertificateNameMismatch) > 0;
                 processor.executeChain(chain);
+                if (hasNameMismatch) {
+                    processor.addStatus(entry.ServerObject.Tree.Last().Flatten().Last(), new X509ChainStatus2 {Status = X509ChainStatusFlags2.NameMismatch});
+                }
                 entry.InternalChain.Reset();
                 processor.redirected = true;
             }
@@ -185,14 +186,12 @@ namespace SSLVerifier.Core.Processor {
                 extendedCertValidation(tree, chain.ChainElements[index], index);
             }
 
+            // this is necessary for stuff like WPF, because of an attempt to update CollectionView in background thread.
             if (syncContext == null) {
                 NativeEntry.Tree.Add(tempList[0]);
             } else {
                 syncContext.Send(x => NativeEntry.Tree.Add(tempList[0]), null);
             }
-            //SynchronizationContext.Current.Send(x => NativeEntry.Tree.Add(tempList[0]), null);
-            //NativeEntry.Tree.Add(tempList[0]);
-            // bworker.ReportProgress(0, new ReportObject { Action = "Add", Index = currentIndex, NewTree = tempList[0] });
         }
         void extendedCertValidation(TreeNode<IChainElement> tree, X509ChainElement chainElement, Int32 index) {
             if (Config.CheckWeakPubKey) {
