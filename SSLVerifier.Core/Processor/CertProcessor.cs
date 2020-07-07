@@ -1,41 +1,41 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 using System.Net;
 using System.Net.Security;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
-using SSLVerifier.API.ModelObjects;
-using SSLVerifier.Core;
+using System.Threading;
+using System.Threading.Tasks;
 using SSLVerifier.Core.Extensions;
-using SSLVerifier.Core.Models;
-using SSLVerifier.Core.Processor;
+using SSLVerifier.Core.Models; //using SSLVerifier.API.ModelObjects;
 
-namespace SSLVerifier.API.MainLogic {
-    class CertProcessor {
+namespace SSLVerifier.Core.Processor {
+    public class CertProcessor {
         const String SERVER_AUTHENTICATION = "1.3.6.1.5.5.7.3.1";
-        const String RSA_ALG_ID            = "1.2.840.113549.1.1.1";
-        const String EXT_EKU               = "2.5.29.37";
-        const String EXT_SAN               = "2.5.29.17";
+        const String RSA_ALG_ID = "1.2.840.113549.1.1.1";
+        const String EXT_EKU = "2.5.29.37";
+        const String EXT_SAN = "2.5.29.17";
 
-        readonly List<String> _visitedNames = new List<String>();
+        static readonly Object _lock = new Object();
+        static readonly IDictionary<String, CertProcessor> _syncTable = new Dictionary<String, CertProcessor>(StringComparer.OrdinalIgnoreCase);
+        static SynchronizationContext syncContext;
+        readonly ISet<String> _visitedNames = new HashSet<String>(StringComparer.OrdinalIgnoreCase);
         readonly X509ChainStatusFlags2 _warningStatuses;
-        static Int32 currentIndex;
         Boolean redirected, globalErrors, globalWarnings, shouldProceed = true;
-        BackgroundWorker bworker;
 
-        public CertProcessor() {
+        public CertProcessor(ICertProcessorConfig config) {
+            Config = config;
             _warningStatuses = X509ChainStatusFlags2.AboutExpire
                                | X509ChainStatusFlags2.WeakRsaPublicKey
                                | X509ChainStatusFlags2.HasWeakSignature;
         }
 
         ServerObjectWrapper Entry { get; set; }
-        ServerObject NativeEntry => Entry.ServerObject;
-        public ICertProcessorConfig Config { get; set; }
+        IServerObject NativeEntry => Entry.ServerObject;
+        public ICertProcessorConfig Config { get; }
 
-        void createRequest() {
+        async Task createRequest() {
             NativeEntry.Log.Progress = 10;
             Uri preUrl = new Uri("https://" + NativeEntry.ServerAddress);
             NativeEntry.Log.AppendLine("Generating connection string...");
@@ -45,6 +45,9 @@ namespace SSLVerifier.API.MainLogic {
                 preUrl.PathAndQuery;
             NativeEntry.Log.AppendLine($"Connection string is: {preString}");
             Entry.Request = (HttpWebRequest)WebRequest.Create(preString);
+            lock (_lock) {
+                _syncTable.Add(Entry.Request.RequestUri.ToString(), this);
+            }
             Entry.Request.UserAgent = "SSL Certificate Verifier v1.3";
             if (NativeEntry.Proxy.UseProxy) {
                 Entry.Request.Proxy = new WebProxy();
@@ -53,16 +56,22 @@ namespace SSLVerifier.API.MainLogic {
                     Entry.Request.Proxy.Credentials = creds;
                 }
             }
-            _visitedNames.Add(Entry.Request.Host.ToLower());
+            _visitedNames.Add(Entry.Request.Host);
             Entry.Request.Timeout = 30000;
             Entry.Request.AllowAutoRedirect = true;
-            getResponse();
+            await getResponse();
+            lock (_lock) {
+                _syncTable.Remove(Entry.Request.RequestUri.ToString());
+            }
         }
-        void getResponse() {
+        async Task getResponse() {
             NativeEntry.Log.Progress = 15;
             NativeEntry.Log.AppendLine("Entering certificate validation callback function...");
             ServicePointManager.MaxServicePointIdleTime = 0;
-            ServicePointManager.ServerCertificateValidationCallback = serverCertificateValidationCallback;
+            if (ServicePointManager.ServerCertificateValidationCallback == null) {
+                ServicePointManager.ServerCertificateValidationCallback = serverCertificateValidationCallback;
+            }
+
             if (!shouldProceed) {
                 NativeEntry.Log.Progress = 100;
                 ServicePointManager.ServerCertificateValidationCallback = null;
@@ -70,7 +79,7 @@ namespace SSLVerifier.API.MainLogic {
             }
             NativeEntry.Log.Progress = 40;
             try {
-                Entry.Response = (HttpWebResponse)Entry.Request.GetResponse();
+                Entry.Response = (HttpWebResponse)await Entry.Request.GetResponseAsync();
                 NativeEntry.Log.Progress = 70;
             } catch (WebException e) {
                 if (e.Message.Contains("(401)")) {
@@ -89,37 +98,43 @@ namespace SSLVerifier.API.MainLogic {
                 ServicePointManager.ServerCertificateValidationCallback = null;
             }
         }
-        Boolean serverCertificateValidationCallback(Object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors) {
-            Entry.InternalChain = new X509Chain(Config.AllowUserTrust);
-            if (redirected) {
-                if (_visitedNames.Contains(((HttpWebRequest)sender).Address.Host.ToLower())) {
-                    NativeEntry.Log.AppendLine(
-                        $"We are redirected to an already visited host: {((HttpWebRequest)sender).Address.Host}. Stop execution.");
-                    shouldProceed = false;
-                    ((HttpWebRequest)sender).AllowAutoRedirect = false;
-                    return true;
+        static Boolean serverCertificateValidationCallback(Object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors) {
+            lock (_lock) {
+                var request = (HttpWebRequest)sender;
+                CertProcessor processor = _syncTable[request.RequestUri.ToString()];
+                ServerObjectWrapper entry = processor.Entry;
+                ICertProcessorConfig config = processor.Config;
+
+                entry.InternalChain = new X509Chain(!config.AllowUserTrust);
+                if (processor.redirected) {
+                    if (!processor._visitedNames.Add(request.Address.Host)) {
+                        entry.ServerObject.Log.AppendLine(
+                            $"We are redirected to an already visited host: {request.Address.Host}. Stop execution.");
+                        processor.shouldProceed = false;
+                        request.AllowAutoRedirect = false;
+                        return true;
+                    }
+                    entry.ServerObject.Log.AppendLine("We are redirected. Entering the certificate validation callback function again.");
+                    entry.ServerObject.Log.AppendLine($"Redirected URL: {((HttpWebRequest)sender).Address.AbsoluteUri}");
+                    entry.ServerObject.ChainStatus = 0;
+                } else {
+                    entry.ServerObject.Log.AppendLine($"Server returned {chain.ChainElements.Count} certificates.");
                 }
-                _visitedNames.Add(((HttpWebRequest)sender).Address.Host);
-                NativeEntry.Log.AppendLine("We are redirected. Entering the certificate validation callback function again.");
-                NativeEntry.Log.AppendLine($"Redirected URL: {((HttpWebRequest)sender).Address.AbsoluteUri}");
-                NativeEntry.ChainStatus = 0;
-            } else {
-                NativeEntry.Log.AppendLine($"Server returned {chain.ChainElements.Count} certificates.");
-            }
-            if (chain.ChainElements.Count > 1) {
-                NativeEntry.Log.AppendLine("Dumping certificates:");
-                for (Int32 index = 0; index < chain.ChainElements.Count; index++) {
-                    NativeEntry.Log.AppendLine($"=============================== Certificate {index} ===============================");
-                    NativeEntry.Log.AppendLine(chain.ChainElements[index].Certificate.ToString(true));
-                    Entry.InternalChain.ChainPolicy.ExtraStore.Add(chain.ChainElements[index].Certificate);
+                if (chain.ChainElements.Count > 1) {
+                    entry.ServerObject.Log.AppendLine("Dumping certificates:");
+                    for (Int32 index = 0; index < chain.ChainElements.Count; index++) {
+                        entry.ServerObject.Log.AppendLine($"=============================== Certificate {index} ===============================");
+                        entry.ServerObject.Log.AppendLine(chain.ChainElements[index].Certificate.ToString(true));
+                        entry.InternalChain.ChainPolicy.ExtraStore.Add(chain.ChainElements[index].Certificate);
+                    }
                 }
+                if (((Int32)sslPolicyErrors & (Int32)SslPolicyErrors.RemoteCertificateNameMismatch) == 0) {
+                    entry.ServerObject.ChainStatus |= X509ChainStatusFlags2.NameMismatch;
+                }
+                processor.executeChain(chain);
+                entry.InternalChain.Reset();
+                processor.redirected = true;
             }
-            if (((Int32)sslPolicyErrors & (Int32)SslPolicyErrors.RemoteCertificateNameMismatch) == 0) {
-                NativeEntry.ChainStatus |= X509ChainStatusFlags2.NameMismatch;
-            }
-            executeChain(chain);
-            Entry.InternalChain.Reset();
-            redirected = true;
             return true;
         }
 
@@ -151,7 +166,35 @@ namespace SSLVerifier.API.MainLogic {
             grabInternalChain(chain);
             NativeEntry.Log.Progress += 3;
         }
-        void extendedCertValidation(TreeNode<ChainElement> tree, X509ChainElement chainElement, Int32 index) {
+        void grabInternalChain(X509Chain chain) {
+            TreeNode<IChainElement> tree = Entry.Response == null
+                ? new TreeNode<IChainElement>(new ChainElement { Name = Entry.Request.Address.AbsoluteUri, IsRoot = true })
+                : new TreeNode<IChainElement>(new ChainElement { Name = Entry.Response.ResponseUri.AbsoluteUri, IsRoot = true });
+            List<TreeNode<IChainElement>> tempList = new List<TreeNode<IChainElement>> { tree };
+            for (Int32 index = chain.ChainElements.Count - 1; index >= 0; index--) {
+                ChainElement temp = new ChainElement {
+                    Certificate = Entry.InternalChain.ChainElements[index].Certificate,
+                    Name = Entry.InternalChain.ChainElements[index].Certificate.GetNameInfo(X509NameType.SimpleName, false)
+                };
+                tree.AddChild(temp);
+                temp.PropagatedErrors = tree.Value.NativeErrors;
+                tree = tree.Children[0];
+                addStatus(tree.Value, chain.ChainStatus.Select(x => new X509ChainStatus2(x)).ToArray());
+                addStatus(tree.Value, Entry.InternalChain.ChainElements.Item(chain.ChainElements[index])
+                    .ChainElementStatus.Select(x => new X509ChainStatus2(x)).ToArray());
+                extendedCertValidation(tree, chain.ChainElements[index], index);
+            }
+
+            if (syncContext == null) {
+                NativeEntry.Tree.Add(tempList[0]);
+            } else {
+                syncContext.Send(x => NativeEntry.Tree.Add(tempList[0]), null);
+            }
+            //SynchronizationContext.Current.Send(x => NativeEntry.Tree.Add(tempList[0]), null);
+            //NativeEntry.Tree.Add(tempList[0]);
+            // bworker.ReportProgress(0, new ReportObject { Action = "Add", Index = currentIndex, NewTree = tempList[0] });
+        }
+        void extendedCertValidation(TreeNode<IChainElement> tree, X509ChainElement chainElement, Int32 index) {
             if (Config.CheckWeakPubKey) {
                 if (chainElement.Certificate.PublicKey.Oid.Value == RSA_ALG_ID) {
                     if (chainElement.Certificate.PublicKey.Key.KeySize < Config.MinimumRsaPubKeyLength) {
@@ -183,7 +226,7 @@ namespace SSLVerifier.API.MainLogic {
                 }
                 X509Extension san = chainElement.Certificate.Extensions[EXT_SAN];
                 if (san == null) {
-                    addStatus(tree.Value, new X509ChainStatus2 {Status = X509ChainStatusFlags2.MissingAltNameExtension });
+                    addStatus(tree.Value, new X509ChainStatus2 { Status = X509ChainStatusFlags2.MissingAltNameExtension });
                 }
             }
         }
@@ -194,36 +237,16 @@ namespace SSLVerifier.API.MainLogic {
                 NativeEntry.Log.AppendLine("Fetching SAN values:");
                 NativeEntry.Log.AppendLine(san.Format(true));
                 foreach (String name in san.Format(false)
-                    .Split(new[] {", "}, StringSplitOptions.RemoveEmptyEntries)) {
+                    .Split(new[] { ", " }, StringSplitOptions.RemoveEmptyEntries)) {
                     NativeEntry.SAN.Add(name);
                 }
             }
-        }
-        void grabInternalChain(X509Chain chain) {
-            TreeNode<ChainElement> tree = Entry.Response == null
-                ? new TreeNode<ChainElement>(new ChainElement { Name = Entry.Request.Address.AbsoluteUri, IsRoot = true })
-                : new TreeNode<ChainElement>(new ChainElement { Name = Entry.Response.ResponseUri.AbsoluteUri, IsRoot = true });
-            List<TreeNode<ChainElement>> tempList = new List<TreeNode<ChainElement>> { tree };
-            for (Int32 index = chain.ChainElements.Count - 1; index >= 0; index--) {
-                ChainElement temp = new ChainElement {
-                    Certificate = Entry.InternalChain.ChainElements[index].Certificate,
-                    Name = Entry.InternalChain.ChainElements[index].Certificate.GetNameInfo(X509NameType.SimpleName, false)
-                };
-                tree.AddChild(temp);
-                temp.PropagatedErrors = tree.Value.NativeErrors;
-                tree = tree.Children[0];
-                addStatus(tree.Value, chain.ChainStatus.Select(x => new X509ChainStatus2(x)).ToArray());
-                addStatus(tree.Value, Entry.InternalChain.ChainElements.Item(chain.ChainElements[index])
-                    .ChainElementStatus.Select(x => new X509ChainStatus2(x)).ToArray());
-                extendedCertValidation(tree, chain.ChainElements[index], index);
-            }
-            bworker.ReportProgress(0, new ReportObject { Action = "Add", Index = currentIndex, NewTree = tempList[0] });
         }
         static Boolean hasValidEKU(X509Certificate2 cert) {
             X509EnhancedKeyUsageExtension eku = (X509EnhancedKeyUsageExtension)cert.Extensions[EXT_EKU];
             return eku?.EnhancedKeyUsages[SERVER_AUTHENTICATION] != null;
         }
-        void addStatus(ChainElement temp, params X509ChainStatus2[] status) {
+        void addStatus(IChainElement temp, params X509ChainStatus2[] status) {
             if (status == null) { return; }
             foreach (X509ChainStatus2 flag in status) {
                 if (flag.Status != X509ChainStatusFlags2.NoError && (_warningStatuses & flag.Status) == 0) {
@@ -247,45 +270,36 @@ namespace SSLVerifier.API.MainLogic {
                 NativeEntry.ItemStatus = ServerStatusEnum.Valid;
             }
         }
-        public void StartScan(Object sender, DoWorkEventArgs EventArgs) {
-            if (!(sender is BackgroundWorker worker)) { return; }
-
-            bworker = worker;
-            worker.ReportProgress(0);
-            BackgroundObject background = (BackgroundObject)EventArgs.Argument;
-            Int32 duration = 100 / background.Servers.Count;
-            for (Int32 index = 0; index < background.Servers.Count; index++) {
-                // if single scan is selected, process entries that are marked to process.
-                if (background.SingleScan && !background.Servers[index].CanProcess) { continue; }
-                currentIndex = index;
-                worker.ReportProgress(duration * index);
-
-                globalErrors = globalWarnings = false;
-                ServerObject nativeObject = background.Servers[index];
-                nativeObject.Log.Clear();
-                nativeObject.Log.AppendLine("**************************************************************************");
-                nativeObject.Log.AppendLine($"Processing '{nativeObject.ServerAddress}'");
-                nativeObject.Log.AppendLine("**************************************************************************");
-                nativeObject.Log.AppendLine($"Scan started: {DateTime.Now:dd-MM-yyyy HH:mm:ss}");
-                // prepare properties
-                worker.ReportProgress(0, new ReportObject { Action = "Clear", Index = index });
-
-                using (Entry = new ServerObjectWrapper(nativeObject)) {
-                    Entry.InternalChain = new X509Chain(!Config.AllowUserTrust);
-                    ServicePointManager.SecurityProtocol = (SecurityProtocolType)Config.SslProtocolsToUse;
-                    // execute main routine
-                    createRequest();
-                }
-
-                // calculate resulting status of the object
-                getEffectiveStatus();
-                // release resources and close connections
-                NativeEntry.Log.AppendLine("Finished!");
-                NativeEntry.Log.Progress = 100;
-                NativeEntry.Log.AppendLine("Scan ended: " + DateTime.Now.ToString("dd-MM-yyyy HH:mm:ss"));
-                redirected = false;
+        public async Task StartScan(IServerObject server, SynchronizationContext ctx) {
+            if (server == null) {
+                return;
             }
-            worker.ReportProgress(100);
+            syncContext = ctx;
+            lock (_lock) {
+                _syncTable.Clear();
+            }
+            _visitedNames.Clear();
+            redirected = globalErrors = globalWarnings = false;
+            server.Log.Clear();
+            server.Log.AppendLine("**************************************************************************");
+            server.Log.AppendLine($"Processing '{server.ServerAddress}'");
+            server.Log.AppendLine("**************************************************************************");
+            server.Log.AppendLine($"Scan started: {DateTime.Now:dd-MM-yyyy HH:mm:ss}");
+
+            using (Entry = new ServerObjectWrapper(server)) {
+                Entry.InternalChain = new X509Chain(!Config.AllowUserTrust);
+                ServicePointManager.SecurityProtocol = (SecurityProtocolType)Config.SslProtocolsToUse;
+                // execute main routine
+                await createRequest();
+            }
+
+            // calculate resulting status of the object
+            getEffectiveStatus();
+            // release resources and close connections
+            NativeEntry.Log.AppendLine("Finished!");
+            NativeEntry.Log.Progress = 100;
+            NativeEntry.Log.AppendLine("Scan ended: " + DateTime.Now.ToString("dd-MM-yyyy HH:mm:ss"));
+            redirected = false;
         }
     }
 }

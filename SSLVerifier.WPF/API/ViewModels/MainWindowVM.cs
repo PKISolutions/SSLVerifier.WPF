@@ -1,6 +1,9 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Linq;
 using System.Security.Cryptography.X509Certificates;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using Microsoft.Win32;
@@ -9,6 +12,7 @@ using SSLVerifier.API.Functions;
 using SSLVerifier.API.MainLogic;
 using SSLVerifier.API.ModelObjects;
 using SSLVerifier.Core;
+using SSLVerifier.Core.Models;
 using SSLVerifier.Core.Processor;
 using SSLVerifier.Views.Windows;
 using SysadminsLV.WPF.OfficeTheme.Toolkit;
@@ -17,13 +21,12 @@ using SysadminsLV.WPF.OfficeTheme.Toolkit.ViewModels;
 
 namespace SSLVerifier.API.ViewModels {
     class MainWindowVM : ViewModelBase {
-        Boolean alreadyExitRaised, singleScan, isSaved = true, running;
+        Boolean alreadyExitRaised, isSaved = true, running;
         String lastSavedFile, tbServer, statusText = "Ready";
         ServerObject selectedItem;
         Int32 selectedIndex, threshold = 30, tbPort = 443;
         Double progress, progressWidth;
-        ChainElement selectedTreeElement;
-        Visibility progressVisible;
+        IChainElement selectedTreeElement;
 
         public MainWindowVM() {
             initCommands();
@@ -39,9 +42,11 @@ namespace SSLVerifier.API.ViewModels {
             ViewChainCertificateCommand = new RelayCommand(ViewChainCertificate, canViewChainCertificate);
             AddServerCommand = new RelayCommand(addServer, canAddServer);
             RemoveServerCommand = new RelayCommand(removeServer, CanRemoveServer);
-            StartSingleScanCommand = new RelayCommand(StartSingleScan, canStartSingleScan);
-            StartSingleScan2Command = new RelayCommand(addServerAndScan, canAddServerAndScan);
-            StartScanCommand = new RelayCommand(startScan, canStartScan);
+            StartScanAsyncCommand = new AsyncCommand(startScanAsync, canStartScan);
+            AddAndScanAsyncCommand = new AsyncCommand(addAndStartAsync, canAddAndScan);
+            //StartSingleScanCommand = new RelayCommand(StartSingleScan, canStartSingleScan);
+            //StartSingleScan2Command = new RelayCommand(addServerAndScan, canAddServerAndScan);
+            //StartScanCommand = new RelayCommand(startScan, canStartScan);
             ShowAboutCommand = new RelayCommand(ShowAbout);
             ShowEntryProperties = new RelayCommand(showProperties, canShowProperties);
             ShowSettings = new RelayCommand(showSettings);
@@ -60,9 +65,8 @@ namespace SSLVerifier.API.ViewModels {
         public ICommand ViewChainCertificateCommand { get; set; }
         public ICommand AddServerCommand { get; set; }
         public ICommand RemoveServerCommand { get; set; }
-        public ICommand StartSingleScanCommand { get; set; }
-        public ICommand StartSingleScan2Command { get; set; }
-        public ICommand StartScanCommand { get; set; }
+        public IAsyncCommand StartScanAsyncCommand { get; set; }
+        public IAsyncCommand AddAndScanAsyncCommand { get; set; }
         public ICommand ShowAboutCommand { get; set; }
         public ICommand ShowLicenseCommand { get; set; }
         public ICommand ShowEntryProperties { get; set; }
@@ -122,13 +126,6 @@ namespace SSLVerifier.API.ViewModels {
                 OnPropertyChanged(nameof(StatusText));
             }
         }
-        public Visibility ProgressVisible {
-            get => progressVisible;
-            set {
-                progressVisible = value;
-                OnPropertyChanged(nameof(ProgressVisible));
-            }
-        }
         public Double Progress {
             get => progress;
             set {
@@ -157,7 +154,7 @@ namespace SSLVerifier.API.ViewModels {
                 OnPropertyChanged(nameof(SelectedIndex));
             }
         }
-        public ChainElement SelectedTreeItem {
+        public IChainElement SelectedTreeItem {
             get => selectedTreeElement;
             set {
                 selectedTreeElement = value;
@@ -197,7 +194,7 @@ namespace SSLVerifier.API.ViewModels {
         void saveList(Object obj) {
             if (String.IsNullOrEmpty(LastSavedFile)) { saveAsList(null); }
             try {
-                XmlRoutine.Serialize(ServerList.Servers, LastSavedFile);
+                ServerList.Servers.SaveAsXML(LastSavedFile);
                 IsSaved = true;
             } catch (Exception e) {
                 MsgBox.Show("XML Write error", e.Message);
@@ -213,7 +210,7 @@ namespace SSLVerifier.API.ViewModels {
             if (result == true) {
                 LastSavedFile = dlg.FileName;
                 try {
-                    XmlRoutine.Serialize(ServerList.Servers, LastSavedFile);
+                    ServerList.Servers.SaveAsXML(LastSavedFile);
                     IsSaved = true;
                 } catch (Exception e) {
                     MsgBox.Show("XML Write error", e.Message);
@@ -321,89 +318,81 @@ namespace SSLVerifier.API.ViewModels {
             return SelectedTreeItem?.Certificate != null;
         }
 
-        public void StartSingleScan(Object obj) {
-            singleScan = true;
-            startScan(null);
-        }
-        Boolean canStartSingleScan(Object obj) {
-            return SelectedIndex >= 0;
-        }
-        void addServerAndScan(Object obj) {
-            ServerObject server = new ServerObject { ServerAddress = ServerName2.Trim().ToLower().Replace("https://", null), Port = Port2 };
-            ServerList.Servers.Add(server);
-            IsSaved = false;
-            ServerName2 = String.Empty;
-            SelectedIndex = ServerList.Servers.Count - 1;
-            StartSingleScan(null);
-        }
-        Boolean canAddServerAndScan(Object obj) {
+        Boolean canAddAndScan(Object obj) {
             return !String.IsNullOrEmpty(ServerName2) &&
                 !String.IsNullOrWhiteSpace(ServerName2) &&
                 !ServerList.Servers.Contains(new ServerObject { ServerAddress = ServerName2.Trim().ToLower().Replace("https://", null), Port = Port2 });
         }
-        void prepareScan() {
+        void prepareScan(Boolean singleScan) {
             foreach (ServerObject server in ServerList.Servers) {
                 if (singleScan) {
                     server.CanProcess = false;
                 } else {
+                    server.CanProcess = true;
                     server.ItemStatus = ServerStatusEnum.Unknown;
                 }
             }
             if (singleScan) {
-                ServerList.Servers[SelectedIndex].CanProcess = true;
-                ServerList.Servers[SelectedIndex].ItemStatus = ServerStatusEnum.Unknown;
+                SelectedItem.CanProcess = true;
+                SelectedItem.ItemStatus = ServerStatusEnum.Unknown;
             }
         }
-        void startScan(Object obj) {
+
+        async Task startScanAsync(Object o, CancellationToken token) {
+            var uiContext = SynchronizationContext.Current;
             Running = true;
-            ProgressVisible = Visibility.Visible;
             ProgressWidth = 100;
             StatusText = "working...";
-            prepareScan();
-            BackgroundWorker worker = new BackgroundWorker { WorkerReportsProgress = true };
-            var certVerifier = new CertProcessor {
-                Config = new CertProcessorConfig {
-                    Threshold = Threshold
-                }
-            };
 
-            worker.DoWork += certVerifier.StartScan;
-            worker.RunWorkerCompleted += endScan;
-            worker.ProgressChanged += scanReportChanged;
-            // reset statuses
-            BackgroundObject arg = new BackgroundObject(ServerList.Servers) {
-                SingleScan = singleScan
+            Boolean singleScan = false;
+            if (o != null) {
+                switch (o.ToString()) {
+                    case "1": singleScan = true; break;
+                }
+            }
+            prepareScan(singleScan);
+
+            await ServerList.Servers
+                .Where(x => x.CanProcess)
+                .ForEachAsync(5, async x => {
+                    var certVerifier = new CertProcessor(new CertProcessorConfig { Threshold = Threshold });
+                    await certVerifier.StartScan(x, uiContext);
+                });
+            
+            endScan();
+        }
+
+        async Task addAndStartAsync(Object o, CancellationToken token) {
+            ServerObject server = new ServerObject {
+                ServerAddress = ServerName2.Trim().ToLower().Replace("https://", null),
+                Port = Port2
             };
-            worker.RunWorkerAsync(arg);
+            ServerList.Servers.Add(server);
+            SelectedItem = server;
+            IsSaved = false;
+            ServerName2 = String.Empty;
+            SelectedIndex = ServerList.Servers.Count - 1;
+            await StartScanAsyncCommand.ExecuteAsync("1");
+        }
+        void endScan() {
+            Running = false;
+            ProgressWidth = 0;
+            StatusText = "Ready";
             CommandManager.InvalidateRequerySuggested();
         }
-        void scanReportChanged(Object sender, ProgressChangedEventArgs e) {
-            if (e.UserState == null) {
-                Progress = e.ProgressPercentage;
-            } else {
-                switch (((ReportObject)e.UserState).Action) {
-                    case "Clear":
-                        ServerList.Servers[((ReportObject)e.UserState).Index].Tree.Clear();
-                        break;
-                    case "Add":
-                        ServerList.Servers[((ReportObject)e.UserState).Index].Tree.Add(((ReportObject)e.UserState).NewTree);
-                        break;
+        Boolean canStartScan(Object o) {
+            if (Running) {
+                return false;
+            }
+            Boolean single = false;
+            if (o != null) {
+                switch (o.ToString()) {
+                    case "1": single = true; break;
                 }
             }
-        }
-        void endScan(Object Sender, RunWorkerCompletedEventArgs e) {
-            Running = singleScan = false;
-            ProgressVisible = Visibility.Hidden;
-            ProgressWidth = 0;
-            foreach (ServerObject server in ServerList.Servers) {
-                server.CanProcess = false;
-            }
-            ((BackgroundWorker)Sender).Dispose();
-            StatusText = "ready";
-
-        }
-        Boolean canStartScan(Object obj) {
-            return !Running && ServerList.Servers.Count > 0;
+            return single
+                ? SelectedItem != null
+                : !Running && ServerList.Servers.Count > 0;
         }
 
         static void addServer(Object obj) {

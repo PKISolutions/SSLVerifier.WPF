@@ -1,17 +1,18 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Security.Cryptography.X509Certificates;
+using SSLVerifier.Core.Models;
 using SSLVerifier.Core.Processor;
 using SysadminsLV.WPF.OfficeTheme.Toolkit.ViewModels;
 
 namespace SSLVerifier.API.ModelObjects {
-    public sealed class ChainElement : ViewModelBase {
+    public sealed class ChainElement : ViewModelBase, IChainElement {
         String name;
         X509Certificate2 cert;
-        ChainElement parent;
+        IChainElement parent;
 
         public ChainElement() {
-            Child = new ObservableCollection<ChainElement>();
+            Child = new ObservableCollection<IChainElement>();
         }
 
         public String Name {
@@ -29,7 +30,7 @@ namespace SSLVerifier.API.ModelObjects {
                 OnPropertyChanged(nameof(Certificate));
             }
         }
-        public ChainElement Parent {
+        public IChainElement Parent {
             get => parent;
             set {
                 parent = value;
@@ -38,7 +39,7 @@ namespace SSLVerifier.API.ModelObjects {
         }
         public String NativeErrorString => NativeErrors.ToString().Replace(", ", Environment.NewLine);
         public String PropagatedErrorString => PropagatedErrors.ToString().Replace(", ", Environment.NewLine);
-        public ObservableCollection<ChainElement> Child { get; set; }
+        public ObservableCollection<IChainElement> Child { get; set; }
         public Boolean IsRoot { get; set; }
         public Boolean HasErrors { get; set; }
         public Boolean HasWarnings { get; set; }

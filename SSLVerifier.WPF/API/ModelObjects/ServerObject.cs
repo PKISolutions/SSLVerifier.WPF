@@ -9,7 +9,7 @@ using SysadminsLV.WPF.OfficeTheme.Toolkit.ViewModels;
 
 namespace SSLVerifier.API.ModelObjects {
     [XmlType(AnonymousType = true)]
-    public class ServerObject : ViewModelBase {
+    public class ServerObject : ViewModelBase, IServerObject {
         X509Certificate2 cert;
         String name;
         Int32 port;
@@ -19,7 +19,7 @@ namespace SSLVerifier.API.ModelObjects {
             status = ServerStatusEnum.Unknown;
             SAN = new ObservableCollection<String>();
             Log = new ServerLogWriter();
-            Tree = new ObservableCollection<TreeNode<ChainElement>>();
+            Tree = new ObservableCollection<TreeNode<IChainElement>>();
             Proxy = new ProxyObject();
         }
 
@@ -75,7 +75,7 @@ namespace SSLVerifier.API.ModelObjects {
             }
         }
         [XmlIgnore]
-        public ObservableCollection<TreeNode<ChainElement>> Tree { get; set; }
+        public ObservableCollection<TreeNode<IChainElement>> Tree { get; }
         [XmlIgnore]
         public Boolean CanProcess { get; set; }
         
@@ -99,7 +99,7 @@ namespace SSLVerifier.API.ModelObjects {
             }
         }
         protected Boolean Equals(ServerObject other) {
-            return String.Equals(name, other.name) && port == other.port;
+            return String.Equals(name, other.name, StringComparison.OrdinalIgnoreCase) && port == other.port;
         }
     }
 }

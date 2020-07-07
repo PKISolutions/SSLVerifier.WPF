@@ -103,7 +103,6 @@
     </ApplicationDefinition>
     <Compile Include="API\Extensions\IEnumerableExtensions.cs" />
     <Compile Include="API\Functions\WindowsUI.cs" />
-    <Compile Include="API\MainLogic\ServerObjectWrapper.cs" />
     <Compile Include="API\ModelObjects\CertProcessorConfig.cs" />
     <Compile Include="API\ModelObjects\ServerListContainer.cs" />
     <Compile Include="API\ModelObjects\SslProtocolEnablerModel.cs" />
@@ -114,7 +113,6 @@
     <Compile Include="Views\Windows\AddServerWindow.xaml.cs">
       <DependentUpon>AddServerWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="API\MainLogic\CertProcessor.cs" />
     <Compile Include="API\MainLogic\XmlRoutine.cs" />
     <Compile Include="API\ModelObjects\BackgroundObject.cs" />
     <Compile Include="API\ModelObjects\ChainElement.cs" />

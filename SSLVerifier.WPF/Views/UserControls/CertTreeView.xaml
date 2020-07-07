@@ -38,8 +38,8 @@
                         Width="100"/>
             </HeaderedContentControl.Header>
             <TreeView Name="tree"
-                      SelectedItemChanged="TreeView_OnSelectedItemChanged"
-                      MouseDoubleClick="TreeMouseDoubleClick"
+                      SelectedItemChanged="onTreeViewSelectedItemChanged"
+                      MouseDoubleClick="onTreeMouseDoubleClick"
                       ItemsSource="{Binding SelectedItem.Tree}"
                       ScrollViewer.CanContentScroll="True">
                 <TreeView.ItemTemplate>
@@ -57,11 +57,11 @@
                 </TreeView.ItemContainerStyle>
             </TreeView>
         </HeaderedContentControl>
-        <!--<StackPanel Grid.Column="0" HorizontalAlignment="Left">
-            <Button Content="View certificate" Command="{Binding ViewChainCertificateCommand}" Width="100"/>
-        </StackPanel>-->
         
-        <GridSplitter Grid.Column="1" Width="5" ResizeBehavior="PreviousAndNext" HorizontalAlignment="Center" VerticalAlignment="Stretch" ResizeDirection="Columns"/>
+        <GridSplitter Grid.Column="1"
+                      ResizeBehavior="PreviousAndNext"
+                      ResizeDirection="Columns"
+                      Style="{StaticResource VerticalGridSplitter}"/>
         <Grid Grid.Column="2">
             <Grid.RowDefinitions>
                 <RowDefinition/>

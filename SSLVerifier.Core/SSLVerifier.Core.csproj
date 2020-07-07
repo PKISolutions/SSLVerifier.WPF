@@ -45,7 +45,12 @@
     <Compile Include="Extensions\X509ChainElementCollectionEx.cs" />
     <Compile Include="IServerLogWriter.cs" />
     <Compile Include="IServerProxy.cs" />
+    <Compile Include="Models\ChainElement.cs" />
+    <Compile Include="Models\IChainElement.cs" />
+    <Compile Include="Models\IServerObject.cs" />
     <Compile Include="Models\TreeNode.cs" />
+    <Compile Include="Processor\CertProcessor.cs" />
+    <Compile Include="Processor\ServerObjectWrapper.cs" />
     <Compile Include="Processor\ServerStatusEnum.cs" />
     <Compile Include="Processor\X509ChainStatus2.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

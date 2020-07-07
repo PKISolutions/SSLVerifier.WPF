@@ -1,16 +1,16 @@
 ﻿using System;
 using System.Net;
 using System.Security.Cryptography.X509Certificates;
-using SSLVerifier.API.ModelObjects;
+using SSLVerifier.Core.Models;
 
-namespace SSLVerifier.API.MainLogic {
-    class ServerObjectWrapper : IDisposable {
+namespace SSLVerifier.Core.Processor {
+    public class ServerObjectWrapper : IDisposable {
 
-        public ServerObjectWrapper(ServerObject serverObject) {
+        public ServerObjectWrapper(IServerObject serverObject) {
             ServerObject = serverObject;
         }
 
-        public ServerObject ServerObject { get; }
+        public IServerObject ServerObject { get; }
         public HttpWebRequest Request { get; set; }
         public HttpWebResponse Response { get; set; }
         public X509Chain InternalChain { get; set; }

@@ -16,9 +16,9 @@
         <KeyBinding Modifiers="Ctrl" Key="N" Command="{Binding NewListCommand}"/>
         <KeyBinding Modifiers="Ctrl" Key="S" Command="{Binding SaveListCommand}"/>
         <KeyBinding Modifiers="Ctrl" Key="O" Command="{Binding OpenListCommand}"/>
-        <KeyBinding Modifiers="Ctrl" Key="E" Command="{Binding StartSingleScanCommand}"/>
-        <KeyBinding Modifiers="Control" Key="Enter" Command="{Binding StartSingleScan2Command}"/>
-        <KeyBinding Key="F5" Command="{Binding StartScanCommand}"/>
+        <KeyBinding Modifiers="Ctrl" Key="E" Command="{Binding StartScanAsyncCommand}" CommandParameter="1"/>
+        <KeyBinding Modifiers="Control" Key="Enter" Command="{Binding AddAndScanAsyncCommand}"/>
+        <KeyBinding Key="F5" Command="{Binding StartScanAsyncCommand}"/>
         <KeyBinding Key="OemPlus" Command="{Binding AddServerCommand}"/>
         <KeyBinding Key="Delete" Command="{Binding RemoveServerCommand}"/>
     </Window.InputBindings>
@@ -139,11 +139,11 @@
                     <Image Source="/Views/Images/Menu/remove_16x16.png" />
                 </Button>
                 <Separator/>
-                <Button Command="{Binding StartSingleScanCommand}" ToolTip="Scan selected item (Ctrl+E)">
+                <Button Command="{Binding StartScanAsyncCommand}" CommandParameter="1" ToolTip="Scan selected item (Ctrl+E)">
                     <Image Source="/Views/Images/Menu/start_16x16.png"/>
                 </Button>
                 <Separator/>
-                <Button Command="{Binding StartScanCommand}" ToolTip="Scan all entries (F5)">
+                <Button Command="{Binding StartScanAsyncCommand}" CommandParameter="0" ToolTip="Scan all entries (F5)">
                     <Image Source="/Views/Images/Menu/playall_16x16.png" Width="16" Height="16"/>
                 </Button>
             </ToolBar>
@@ -177,7 +177,7 @@
                         <system:Int32>993</system:Int32>
                     </ComboBoxItem>
                 </ComboBox>
-                <Button Margin="5,0,0,0" Command="{Binding StartSingleScan2Command}" ToolTip="Go (Ctrl+Enter)">
+                <Button Margin="5,0,0,0" Command="{Binding AddAndScanAsyncCommand}" ToolTip="Go (Ctrl+Enter)">
                     <Image Source="/Views/Images/Menu/start_16x16.png"/>	
                 </Button>
             </ToolBar>
@@ -226,7 +226,11 @@
             </StatusBarItem>
             <Separator BorderBrush="#93B0D5" BorderThickness="1,0,0,0"/>
             <StatusBarItem HorizontalAlignment="Right">
-                <ProgressBar Visibility="{Binding ProgressVisible}" Width="150" Height="15" Value="{Binding Progress}" Margin="0,0,10,0"/>
+                <ProgressBar Visibility="{Binding Running, Converter={StaticResource BooleanToVisibilityConverter}}"
+                             Width="150"
+                             Height="15"
+                             Value="{Binding Progress}"
+                             Margin="0,0,10,0"/>
             </StatusBarItem>
         </StatusBar>
         <uc:MainGridUserControl VerticalAlignment="Stretch"/>
