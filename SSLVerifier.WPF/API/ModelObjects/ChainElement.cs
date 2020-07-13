@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Security.Cryptography.X509Certificates;
+using SSLVerifier.Core;
 using SSLVerifier.Core.Models;
 using SSLVerifier.Core.Processor;
 using SysadminsLV.WPF.OfficeTheme.Toolkit.ViewModels;

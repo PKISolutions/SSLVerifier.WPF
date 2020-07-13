@@ -204,7 +204,7 @@ namespace SSLVerifier.Core.Processor {
             if (Config.CheckWeakPubKey) {
                 Boolean isRoot = chainElement.Certificate.SubjectName.RawData.SequenceEqual(chainElement.Certificate.IssuerName.RawData);
                 if (!isRoot) {
-                    if (Config.WeakAlgorithms.Contains(chainElement.Certificate.SignatureAlgorithm.Value)) {
+                    if (Config.WeakAlgorithms.Contains2(chainElement.Certificate.SignatureAlgorithm)) {
                         addStatus(tree.Value, new X509ChainStatus2 { Status = X509ChainStatusFlags2.HasWeakSignature });
                     }
                 }

@@ -3,7 +3,7 @@ using System.Collections.ObjectModel;
 using System.Security.Cryptography.X509Certificates;
 using SSLVerifier.Core.Processor;
 
-namespace SSLVerifier.Core.Models {
+namespace SSLVerifier.Core {
     public interface IChainElement {
         String Name { get; set; }
         X509Certificate2 Certificate { get; set; }

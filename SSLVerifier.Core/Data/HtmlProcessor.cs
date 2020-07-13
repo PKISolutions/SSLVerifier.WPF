@@ -10,15 +10,22 @@ using SSLVerifier.Core.Processor;
 
 namespace SSLVerifier.Core.Data {
     public class HtmlProcessor {
-        readonly IList<IServerObject> _serverList;
+        readonly IList<IServerObject> _serverList = new List<IServerObject>();
         readonly ICertProcessorConfig _config;
 
-        public HtmlProcessor(IList<IServerObject> serverList, ICertProcessorConfig config) {
-            _serverList = serverList ?? throw new ArgumentNullException(nameof(serverList));
+        public HtmlProcessor(ICertProcessorConfig config) {
             _config = config ?? throw new ArgumentNullException(nameof(config));
         }
 
-        public String GenerateReport() {
+        public String GenerateReport(IServerObject[] servers) {
+            if (servers == null) {
+                throw new ArgumentNullException(nameof(servers));
+            }
+            _serverList.Clear();
+            foreach (IServerObject server in servers) {
+                _serverList.Add(server);
+            }
+
             return String.Format(HtmlTemplate.HTML_REPORT,
                 buildMetadata(),
                 buildMainRows(),
@@ -36,7 +43,7 @@ namespace SSLVerifier.Core.Data {
                 _config.StrictUsage,
                 _config.Threshold,
                 _config.CheckWeakPubKey.ToYesNo(),
-                String.Join("<br/>",_config.WeakAlgorithms.Select(x => new Oid(x).Format())));
+                String.Join("<br/>",_config.WeakAlgorithms.Cast<Oid>().Select(x => x.Format())));
         }
 
         String buildMainRows() {

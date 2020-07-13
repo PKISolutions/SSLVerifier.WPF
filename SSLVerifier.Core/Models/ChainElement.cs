@@ -4,7 +4,7 @@ using System.Security.Cryptography.X509Certificates;
 using SSLVerifier.Core.Processor;
 
 namespace SSLVerifier.Core.Models {
-    public class ChainElement : IChainElement {
+    class ChainElement : IChainElement {
         public String Name { get; set; }
         public X509Certificate2 Certificate { get; set; }
         public IChainElement Parent { get; set; }

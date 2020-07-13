@@ -42,6 +42,10 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>HtmlTemplate.resx</DependentUpon>
     </Compile>
+    <Compile Include="Default\CertProcessorConfig.cs" />
+    <Compile Include="Default\ServerEntry.cs" />
+    <Compile Include="Default\ServerEntryProxy.cs" />
+    <Compile Include="Default\ServerLogWriter.cs" />
     <Compile Include="Extensions\BoolExtensions.cs" />
     <Compile Include="Extensions\OidExtensions.cs" />
     <Compile Include="Extensions\X509Certificate2Extensions.cs" />
@@ -50,8 +54,8 @@
     <Compile Include="IServerLogWriter.cs" />
     <Compile Include="IServerProxy.cs" />
     <Compile Include="Models\ChainElement.cs" />
-    <Compile Include="Models\IChainElement.cs" />
-    <Compile Include="Models\IServerObject.cs" />
+    <Compile Include="IChainElement.cs" />
+    <Compile Include="IServerObject.cs" />
     <Compile Include="Models\TreeNode.cs" />
     <Compile Include="Processor\CertProcessor.cs" />
     <Compile Include="Processor\ServerObjectWrapper.cs" />
@@ -66,5 +70,6 @@
       <LastGenOutput>HtmlTemplate.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

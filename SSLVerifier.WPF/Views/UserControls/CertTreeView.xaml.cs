@@ -2,6 +2,7 @@
 using System.Windows;
 using System.Windows.Input;
 using SSLVerifier.API.ViewModels;
+using SSLVerifier.Core;
 using SSLVerifier.Core.Models;
 using ChainElement = SSLVerifier.API.ModelObjects.ChainElement;
 

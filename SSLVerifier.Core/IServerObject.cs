@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Security.Cryptography.X509Certificates;
+using SSLVerifier.Core.Models;
 using SSLVerifier.Core.Processor;
 
-namespace SSLVerifier.Core.Models {
+namespace SSLVerifier.Core {
     public interface IServerObject {
         String ServerAddress { get; }
         Int32 Port { get; }

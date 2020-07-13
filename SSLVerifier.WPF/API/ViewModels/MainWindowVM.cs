@@ -14,7 +14,6 @@ using SSLVerifier.API.MainLogic;
 using SSLVerifier.API.ModelObjects;
 using SSLVerifier.Core;
 using SSLVerifier.Core.Data;
-using SSLVerifier.Core.Models;
 using SSLVerifier.Core.Processor;
 using SSLVerifier.Views.Windows;
 using SysadminsLV.WPF.OfficeTheme.Toolkit;
@@ -406,8 +405,8 @@ namespace SSLVerifier.API.ViewModels {
             Boolean? result = dlg.ShowDialog();
             if (result == true) {
                 try {
-                    var proc = new HtmlProcessor(ServerList.Servers.Cast<IServerObject>().ToList(), new CertProcessorConfig { Threshold = Threshold });
-                    File.WriteAllText(dlg.FileName, proc.GenerateReport());
+                    var proc = new HtmlProcessor(new CertProcessorConfig { Threshold = Threshold });
+                    File.WriteAllText(dlg.FileName, proc.GenerateReport(ServerList.Servers.Cast<IServerObject>().ToArray()));
                 } catch (Exception e) {
                     MsgBox.Show("CSV Write error", e.Message);
                 }

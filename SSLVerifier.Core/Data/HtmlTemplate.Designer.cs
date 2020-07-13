@@ -146,18 +146,7 @@ namespace SSLVerifier.Core.Data {
         ///    &lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=utf-8&quot; /&gt;
         ///    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot; /&gt;
         ///    &lt;title&gt;SSL Certificate Verifier Report&lt;/title&gt;
-        ///    &lt;style type=&quot;text/css&quot;&gt;
-        ///        @media print {{
-        ///            .cert-dump {{
-        ///            }}
-        ///        }}
-        ///
-        ///        body {{
-        ///            font: 11pt &quot;Arial&quot;;
-        ///        }}
-        ///
-        ///        pre {{
-        ///     [rest of string was truncated]&quot;;.
+        ///    &lt;style type=&quot;text/css&quot;&gt;body{{font:11pt Arial}}pre{{font:9pt Consolas,Monospace}}.table{{width:100%;border:solid 1px silver;border-spacing:0;border-collapse:separate}}th{{background-color:navy [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string HTML_REPORT {
             get {
