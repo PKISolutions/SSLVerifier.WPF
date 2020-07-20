@@ -11,5 +11,6 @@ namespace SSLVerifier.Core {
         Int32 MinimumRsaPubKeyLength { get; }
         SslProtocols SslProtocolsToUse { get; }
         Int32 Threshold { get; }
+        Boolean SearchCT { get; }
     }
 }

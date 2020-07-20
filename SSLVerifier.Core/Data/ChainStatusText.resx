@@ -180,6 +180,9 @@
   <data name="NoIssuanceChainPolicy" xml:space="preserve">
     <value>The end certificate does not have any resultant issuance policies, and one of the issuing certification authority certificates has a policy constraints extension requiring it.</value>
   </data>
+  <data name="NotInTransparencyLog" xml:space="preserve">
+    <value>The certificate is not published in Certificate Transparency Log</value>
+  </data>
   <data name="NotSignatureValid" xml:space="preserve">
     <value>The certificate does not have a valid signature.</value>
   </data>

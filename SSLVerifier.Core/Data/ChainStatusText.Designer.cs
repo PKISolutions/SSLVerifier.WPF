@@ -250,6 +250,15 @@ namespace SSLVerifier.Core.Data {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The certificate is not published in Certificate Transparency Log.
+        /// </summary>
+        internal static string NotInTransparencyLog {
+            get {
+                return ResourceManager.GetString("NotInTransparencyLog", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The certificate does not have a valid signature..
         /// </summary>
         internal static string NotSignatureValid {

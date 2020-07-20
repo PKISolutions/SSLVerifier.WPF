@@ -20,6 +20,7 @@ namespace SSLVerifier.API.ModelObjects {
             CheckWeakPubKey = Settings.Default.CheckWeakPubKey;
             MinimumRsaPubKeyLength = Settings.Default.MinimumRsaPubKeyLength;
             SslProtocolsToUse = (SslProtocols)Settings.Default.SslProtocolsToUse;
+            SearchCT = Settings.Default.SearchCT;
         }
 
         public Boolean AllowUserTrust { get; }
@@ -29,5 +30,6 @@ namespace SSLVerifier.API.ModelObjects {
         public Int32 MinimumRsaPubKeyLength { get; }
         public SslProtocols SslProtocolsToUse { get; }
         public Int32 Threshold { get; set; }
+        public Boolean SearchCT { get; set; }
     }
 }

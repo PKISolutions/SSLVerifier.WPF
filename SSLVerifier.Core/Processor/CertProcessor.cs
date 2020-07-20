@@ -7,6 +7,7 @@ using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading;
 using System.Threading.Tasks;
+using SSLVerifier.Core.CertTransparency;
 using SSLVerifier.Core.Extensions;
 using SSLVerifier.Core.Models; //using SSLVerifier.API.ModelObjects;
 
@@ -101,6 +102,10 @@ namespace SSLVerifier.Core.Processor {
         static Boolean serverCertificateValidationCallback(Object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors) {
             lock (_lock) {
                 var request = (HttpWebRequest)sender;
+                // normally, the key is presented, but the call to CT may mess this, so silently skip it.
+                if (!_syncTable.ContainsKey(request.RequestUri.ToString())) {
+                    return sslPolicyErrors == SslPolicyErrors.None && chain.ChainStatus.All(x => x.Status == X509ChainStatusFlags.NoError);
+                }
                 CertProcessor processor = _syncTable[request.RequestUri.ToString()];
                 ServerObjectWrapper entry = processor.Entry;
                 ICertProcessorConfig config = processor.Config;
@@ -131,7 +136,7 @@ namespace SSLVerifier.Core.Processor {
                 Boolean hasNameMismatch = ((Int32)sslPolicyErrors & (Int32)SslPolicyErrors.RemoteCertificateNameMismatch) > 0;
                 processor.executeChain(chain);
                 if (hasNameMismatch) {
-                    processor.addStatus(entry.ServerObject.Tree.Last().Flatten().Last(), new X509ChainStatus2 {Status = X509ChainStatusFlags2.NameMismatch});
+                    processor.addStatus(entry.ServerObject.Tree.Last().Flatten().Last(), new X509ChainStatus2 { Status = X509ChainStatusFlags2.NameMismatch });
                 }
                 entry.InternalChain.Reset();
                 processor.redirected = true;
@@ -231,7 +236,15 @@ namespace SSLVerifier.Core.Processor {
                 // Apple policy: up to 398 days after Sep 1 2020
                 var dt = new DateTime(2020, 9, 1);
                 if (chainElement.Certificate.NotBefore > dt && (chainElement.Certificate.NotAfter - chainElement.Certificate.NotBefore).Days > 398) {
-                    addStatus(tree.Value, new X509ChainStatus2 {Status = X509ChainStatusFlags2.TooLongValidity});
+                    addStatus(tree.Value, new X509ChainStatus2 { Status = X509ChainStatusFlags2.TooLongValidity });
+                }
+
+                if (Config.SearchCT) {
+                    var prov = new CertShCTProvider();
+                    Boolean status = prov.CertExist(NativeEntry.ServerAddress, chainElement.Certificate.Thumbprint);
+                    if (!status) {
+                        addStatus(tree.Value, new X509ChainStatus2 { Status = X509ChainStatusFlags2.NotInTransparencyLog });
+                    }
                 }
             }
         }

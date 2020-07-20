@@ -112,5 +112,17 @@ namespace SSLVerifier.Properties {
                 this["SslProtocolsToUse"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool SearchCT {
+            get {
+                return ((bool)(this["SearchCT"]));
+            }
+            set {
+                this["SearchCT"] = value;
+            }
+        }
     }
 }

@@ -11,7 +11,7 @@ using SysadminsLV.WPF.OfficeTheme.Toolkit.ViewModels;
 
 namespace SSLVerifier.API.ViewModels {
     class SettingsVM : ViewModelBase {
-        Boolean strictEKU, userTrust, checkWeakAlgs, checkWeakPubKeyLength;
+        Boolean strictEKU, userTrust, checkWeakAlgs, checkWeakPubKeyLength, searchCT;
         Boolean? dialogResult;
         String algId;
         Int32 minRsaKeyLength, selectedIndex;
@@ -64,6 +64,13 @@ namespace SSLVerifier.API.ViewModels {
         public ObservableCollection<Oid> WeakSigAlgs { get; }
         public ObservableCollection<SslProtocolEnablerModel> SslProtocolsToUse { get; }
 
+        public Boolean SearchCT {
+            get => searchCT;
+            set {
+                searchCT = value;
+                OnPropertyChanged(nameof(SearchCT));
+            }
+        }
         public Boolean StrictEKU {
             get => strictEKU;
             set {
@@ -141,6 +148,7 @@ namespace SSLVerifier.API.ViewModels {
             return SelectedIndex > 0;
         }
         void save(Object obj) {
+            Settings.Default.SearchCT = SearchCT;
             Settings.Default.StrictUsage = StrictEKU;
             Settings.Default.AllowUserTrust = AllowUserTrustStore;
             Settings.Default.CheckWeakPubKey = CheckWeakRsaPubKey;

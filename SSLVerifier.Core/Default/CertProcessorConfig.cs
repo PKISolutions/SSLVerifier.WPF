@@ -35,6 +35,7 @@ namespace SSLVerifier.Core.Default {
         public Int32 MinimumRsaPubKeyLength { get; set; }
         public SslProtocols SslProtocolsToUse { get; set; }
         public Int32 Threshold { get; set; }
+        public Boolean SearchCT { get; set; }
 
         public Boolean AddWeakAlgorithm(String algID) {
             return _sigAlgorithms.Add(new Oid(algID).Value);

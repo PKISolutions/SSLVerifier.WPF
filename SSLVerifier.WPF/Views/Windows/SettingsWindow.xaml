@@ -7,126 +7,128 @@
         xmlns:cm="clr-namespace:SysadminsLV.WPF.OfficeTheme.Toolkit.Commands;assembly=Wpf.OfficeTheme"
         xmlns:behaviors="clr-namespace:SysadminsLV.WPF.OfficeTheme.Toolkit.Behaviors;assembly=Wpf.OfficeTheme"
         mc:Ignorable="d"
-		cm:DialogCloser.DialogResult="{Binding DialogResult}"
-		WindowStartupLocation="CenterOwner"
-		SizeToContent="Height"
+        cm:DialogCloser.DialogResult="{Binding DialogResult}"
+        WindowStartupLocation="CenterOwner"
+        SizeToContent="Height"
         ResizeMode="NoResize"
-		Background="{StaticResource PanelBackgroundBrush}"
-		Foreground="Navy"
+        Background="{StaticResource PanelBackgroundBrush}"
+        Foreground="Navy"
         Title="Settings"
-		Width="500">
-	<Window.DataContext>
-		<viewModels:SettingsVM/>
-	</Window.DataContext>
-	<Window.Resources>
-		<Style TargetType="FrameworkElement">
-			<Setter Property="VerticalAlignment" Value="Center"/>
-		</Style>
-	</Window.Resources>
-	<Grid>
-		<Grid.RowDefinitions>
-			<RowDefinition/>
-			<RowDefinition/>
-		</Grid.RowDefinitions>
-		<Grid Grid.Row="0" behaviors:MarginSetter.Margin="5">
-			<Grid.RowDefinitions>
-				<RowDefinition Height="Auto"/>
-				<RowDefinition Height="Auto"/>
-				<RowDefinition Height="Auto"/>
-				<RowDefinition/>
-				<RowDefinition Height="Auto"/>
-				<RowDefinition Height="Auto"/>
-				<RowDefinition Height="170"/>
-			</Grid.RowDefinitions>
-			<CheckBox Content="Strict EKU validation"
-					  IsChecked="{Binding StrictEKU}"
-					  ToolTip="Indicates whether the leaf certificate is valid for Server Authentication usage"/>
-			<CheckBox Grid.Row="1"
-					  Content="Allow user trust"
-					  IsChecked="{Binding AllowUserTrustStore}"
-					  ToolTip="Indicates whether the user root certificates are allowed for chain building"/>
-			<DockPanel Grid.Row="2">
-				<CheckBox Content="Require minimum RSA public key length: "
-						  VerticalAlignment="Center"
-						  IsChecked="{Binding CheckWeakRsaPubKey}"
-						  ToolTip="Invalidates leaf SSL certificate if its public key is shorter than specified value"/>
-				<TextBox Width="100"
-						 HorizontalAlignment="Left"
-						 Text="{Binding MinimumRsaPublicKeyLength}"
-						 IsEnabled="{Binding CheckWeakRsaPubKey}"/>
-			</DockPanel>
-			<TextBlock Grid.Row="3" Text="Default SSL/TLS version:" VerticalAlignment="Center"/>
-			<ListBox Grid.Row="4"
-					 Width="200"
-					 HorizontalAlignment="Left"
-					 ItemsSource="{Binding SslProtocolsToUse}"
-					 Margin="5,-5,5,5">
-				<ListBox.ItemTemplate>
-					<DataTemplate>
-						<StackPanel Orientation="Horizontal">
-							<CheckBox IsChecked="{Binding Enabled}" VerticalAlignment="Center"/>
-							<TextBlock Text="{Binding ProtocolName}" VerticalAlignment="Center" Margin="5,0,0,0"/>
-						</StackPanel>
-					</DataTemplate>
-				</ListBox.ItemTemplate>
-			</ListBox>
-			<CheckBox Grid.Row="5"
-					  Content="Invalidate weak signature algorithms"
-					  IsChecked="{Binding CheckWeakSignatureAlgorithms}"
-					  ToolTip="Invalidates if leaf or intermediate CA certificates (except root) use one of the specified signature algorithm"/>
-			<Grid Grid.Row="6"
-				  Margin="10,5,5,5"
-				  IsEnabled="{Binding CheckWeakSignatureAlgorithms}">
-				<Grid.RowDefinitions>
-					<RowDefinition Height="Auto"/>
-					<RowDefinition/>
-				</Grid.RowDefinitions>
-				<DockPanel>
-					<TextBox Width="240"
-							 HorizontalAlignment="Left"
-							 Text="{Binding AlgId, UpdateSourceTrigger=PropertyChanged}"/>
-					<Button Content="Add"
-							Width="70"
-							VerticalAlignment="Center"
-							Margin="10,0,0,0"
-							Command="{Binding AddWeakAlgCommand}"/>
-					<Button Content="Remove"
-							Width="70"
-							VerticalAlignment="Center"
-							HorizontalAlignment="Left"
-							Margin="10,0,0,0"
-							Command="{Binding RemoveWeakAlgCommand}"/>
-				</DockPanel>
-				<ListView Grid.Row="1"
-						  Width="400"
-						  Height="140"
-						  HorizontalAlignment="Left"
-						  ItemsSource="{Binding WeakSigAlgs}"
-						  SelectedItem="{Binding SelectedAlgId}"
-						  SelectedIndex="{Binding SelectedIndex}"
-						  SelectionMode="Single">
-					<ListView.View>
-						<GridView>
-							<GridView.ColumnHeaderContainerStyle>
-								<Style TargetType="{x:Type GridViewColumnHeader}">
-									<Setter Property="IsEnabled" Value="False"/>
-								</Style>
-							</GridView.ColumnHeaderContainerStyle>
-							<GridViewColumn Header="Friendly Name" Width="190" DisplayMemberBinding="{Binding FriendlyName}"/>
-							<GridViewColumn Header="Oid Value" Width="190" DisplayMemberBinding="{Binding Value}"/>
-						</GridView>
-					</ListView.View>
-				</ListView>
-			</Grid>
-			
-			
-		</Grid>
-		<DockPanel Grid.Row="1"
-				   Background="{StaticResource PanelHeaderBackground}">
-			<Border BorderThickness="0,1,0,0" BorderBrush="#FF7C9EBC" DockPanel.Dock="Top"/>
-			<Button Content="Close" Click="CloseClick" DockPanel.Dock="Right" Width="60" Margin="10"/>
-			<Button Content="Save" Command="{Binding SaveCommand}" DockPanel.Dock="Right" Width="60" Margin="10"/>
-			<TextBlock/>
-		</DockPanel>
+        Width="500">
+    <Window.DataContext>
+        <viewModels:SettingsVM/>
+    </Window.DataContext>
+    <Window.Resources>
+        <Style TargetType="FrameworkElement">
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0" behaviors:MarginSetter.Margin="5">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="170"/>
+            </Grid.RowDefinitions>
+            <CheckBox Content="Search Transparency Log"
+                      IsChecked="{Binding SearchCT}"
+                      ToolTip="Search server certificate in Certificate Transparency Log (provided by Cert.SH)"/>
+            <CheckBox Grid.Row="1" Content="Strict EKU validation"
+                      IsChecked="{Binding StrictEKU}"
+                      ToolTip="Indicates whether the leaf certificate is valid for Server Authentication usage"/>
+            <CheckBox Grid.Row="2"
+                      Content="Allow user trust"
+                      IsChecked="{Binding AllowUserTrustStore}"
+                      ToolTip="Indicates whether the user root certificates are allowed for chain building"/>
+            <DockPanel Grid.Row="3">
+                <CheckBox Content="Require minimum RSA public key length: "
+                          VerticalAlignment="Center"
+                          IsChecked="{Binding CheckWeakRsaPubKey}"
+                          ToolTip="Invalidates leaf SSL certificate if its public key is shorter than specified value"/>
+                <TextBox Width="100"
+                         HorizontalAlignment="Left"
+                         Text="{Binding MinimumRsaPublicKeyLength}"
+                         IsEnabled="{Binding CheckWeakRsaPubKey}"/>
+            </DockPanel>
+            <TextBlock Grid.Row="4" Text="Default SSL/TLS version:" VerticalAlignment="Center"/>
+            <ListBox Grid.Row="5"
+                     Width="200"
+                     HorizontalAlignment="Left"
+                     ItemsSource="{Binding SslProtocolsToUse}"
+                     Margin="5,-5,5,5">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <CheckBox IsChecked="{Binding Enabled}" VerticalAlignment="Center"/>
+                            <TextBlock Text="{Binding ProtocolName}" VerticalAlignment="Center" Margin="5,0,0,0"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+            <CheckBox Grid.Row="6"
+                      Content="Invalidate weak signature algorithms"
+                      IsChecked="{Binding CheckWeakSignatureAlgorithms}"
+                      ToolTip="Invalidates if leaf or intermediate CA certificates (except root) use one of the specified signature algorithm"/>
+            <Grid Grid.Row="7"
+                  Margin="10,5,5,5"
+                  IsEnabled="{Binding CheckWeakSignatureAlgorithms}">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <DockPanel>
+                    <TextBox Width="240"
+                             HorizontalAlignment="Left"
+                             Text="{Binding AlgId, UpdateSourceTrigger=PropertyChanged}"/>
+                    <Button Content="Add"
+                            Width="70"
+                            VerticalAlignment="Center"
+                            Margin="10,0,0,0"
+                            Command="{Binding AddWeakAlgCommand}"/>
+                    <Button Content="Remove"
+                            Width="70"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Left"
+                            Margin="10,0,0,0"
+                            Command="{Binding RemoveWeakAlgCommand}"/>
+                </DockPanel>
+                <ListView Grid.Row="1"
+                          Width="400"
+                          Height="140"
+                          HorizontalAlignment="Left"
+                          ItemsSource="{Binding WeakSigAlgs}"
+                          SelectedItem="{Binding SelectedAlgId}"
+                          SelectedIndex="{Binding SelectedIndex}"
+                          SelectionMode="Single">
+                    <ListView.View>
+                        <GridView>
+                            <GridView.ColumnHeaderContainerStyle>
+                                <Style TargetType="{x:Type GridViewColumnHeader}">
+                                    <Setter Property="IsEnabled" Value="False"/>
+                                </Style>
+                            </GridView.ColumnHeaderContainerStyle>
+                            <GridViewColumn Header="Friendly Name" Width="190" DisplayMemberBinding="{Binding FriendlyName}"/>
+                            <GridViewColumn Header="Oid Value" Width="190" DisplayMemberBinding="{Binding Value}"/>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+            </Grid>
+        </Grid>
+        <DockPanel Grid.Row="1"
+                   Background="{StaticResource PanelHeaderBackground}">
+            <Border BorderThickness="0,1,0,0" BorderBrush="#FF7C9EBC" DockPanel.Dock="Top"/>
+            <Button Content="Close" Click="CloseClick" DockPanel.Dock="Right" Width="60" Margin="10"/>
+            <Button Content="Save" Command="{Binding SaveCommand}" DockPanel.Dock="Right" Width="60" Margin="10"/>
+            <TextBlock/>
+        </DockPanel>
     </Grid>
 </Window>

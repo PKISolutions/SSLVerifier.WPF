@@ -34,6 +34,7 @@ namespace SSLVerifier.Core.Processor {
         NameMismatch                     = 0x400000000,
         WeakRsaPublicKey                 = 0x800000000,
         MissingAltNameExtension          = 0x1000000000,
-        TooLongValidity                  = 0x2000000000
+        TooLongValidity                  = 0x2000000000,
+        NotInTransparencyLog             = 0x4000000000
     }
 }
