@@ -178,6 +178,8 @@ namespace SSLVerifier.Core.Data {
                         sb.AppendLine(String.Format(HtmlTemplate.HTML_CHAIN_STATUS_ENTRY, "success", chainStatus, text));
                         break;
                     case "AboutExpire":
+                    case "WeakRsaPublicKey":
+                    case "HasWeakSignature":
                         sb.AppendLine(String.Format(HtmlTemplate.HTML_CHAIN_STATUS_ENTRY, "warning", chainStatus, text));
                         break;
                     default:
