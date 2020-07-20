@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Resources;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
+using System.Web;
 using SSLVerifier.Core.Extensions;
 using SSLVerifier.Core.Models;
 using SSLVerifier.Core.Processor;
@@ -118,7 +120,7 @@ namespace SSLVerifier.Core.Data {
                 cert.Issuer,
                 cert.SignatureAlgorithm.Format(),
                 cert.Thumbprint,
-                chainElement.NativeErrors.ToString(),
+                chainStatusToString(chainElement.NativeErrors),
                 cert.ToPEM());
         }
         static String getPublicKeyString(PublicKey key) {
@@ -163,6 +165,28 @@ namespace SSLVerifier.Core.Data {
                 default:
                     throw new ArgumentOutOfRangeException(nameof(status), status, null);
             }
+        }
+
+        static String chainStatusToString(X509ChainStatusFlags2 status) {
+            String[] tokens = status.ToString().Split(new[] { ", " }, StringSplitOptions.RemoveEmptyEntries);
+            var resourceManager = new ResourceManager(typeof(ChainStatusText));
+            var sb = new StringBuilder();
+            foreach (String chainStatus in tokens) {
+                String text = HttpUtility.HtmlEncode(resourceManager.GetString(chainStatus));
+                switch (chainStatus) {
+                    case "NoError":
+                        sb.AppendLine(String.Format(HtmlTemplate.HTML_CHAIN_STATUS_ENTRY, "success", chainStatus, text));
+                        break;
+                    case "AboutExpire":
+                        sb.AppendLine(String.Format(HtmlTemplate.HTML_CHAIN_STATUS_ENTRY, "warning", chainStatus, text));
+                        break;
+                    default:
+                        sb.AppendLine(String.Format(HtmlTemplate.HTML_CHAIN_STATUS_ENTRY, "danger", chainStatus, text));
+                        break;
+                }
+            }
+
+            return sb.ToString();
         }
     }
 }

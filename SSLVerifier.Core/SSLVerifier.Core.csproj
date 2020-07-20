@@ -33,9 +33,15 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Data\ChainStatusText.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ChainStatusText.resx</DependentUpon>
+    </Compile>
     <Compile Include="Data\HtmlProcessor.cs" />
     <Compile Include="Data\HtmlTemplate.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -65,6 +71,10 @@
     <Compile Include="Processor\X509ChainStatusFlags2.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Data\ChainStatusText.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>ChainStatusText.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="Data\HtmlTemplate.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>HtmlTemplate.Designer.cs</LastGenOutput>

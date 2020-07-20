@@ -227,6 +227,12 @@ namespace SSLVerifier.Core.Processor {
                 if (san == null) {
                     addStatus(tree.Value, new X509ChainStatus2 { Status = X509ChainStatusFlags2.MissingAltNameExtension });
                 }
+
+                // Apple policy: up to 398 days after Sep 1 2020
+                var dt = new DateTime(2020, 9, 1);
+                if (chainElement.Certificate.NotBefore > dt && (chainElement.Certificate.NotAfter - chainElement.Certificate.NotBefore).Days > 398) {
+                    addStatus(tree.Value, new X509ChainStatus2 {Status = X509ChainStatusFlags2.TooLongValidity});
+                }
             }
         }
         void readAltNames() {
