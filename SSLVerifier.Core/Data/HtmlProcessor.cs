@@ -45,7 +45,8 @@ namespace SSLVerifier.Core.Data {
                 _config.StrictUsage,
                 _config.Threshold,
                 _config.CheckWeakPubKey.ToYesNo(),
-                String.Join("<br/>",_config.WeakAlgorithms.Cast<Oid>().Select(x => x.Format())));
+                String.Join("<br/>",_config.WeakAlgorithms.Cast<Oid>().Select(x => x.Format())),
+                _config.SearchCT.ToYesNo());
         }
 
         String buildMainRows() {

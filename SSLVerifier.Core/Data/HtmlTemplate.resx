@@ -289,6 +289,10 @@
                     &lt;td&gt;{0}&lt;/td&gt;
                 &lt;/tr&gt;
                 &lt;tr&gt;
+                    &lt;td&gt;Search CT:&lt;/td&gt;
+                    &lt;td&gt;{9}&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
                     &lt;td&gt;Allow User Root Store:&lt;/td&gt;
                     &lt;td&gt;{1}&lt;/td&gt;
                 &lt;/tr&gt;

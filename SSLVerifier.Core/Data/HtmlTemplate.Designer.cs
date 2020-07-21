@@ -169,6 +169,10 @@ namespace SSLVerifier.Core.Data {
         ///                    &lt;td&gt;{0}&lt;/td&gt;
         ///                &lt;/tr&gt;
         ///                &lt;tr&gt;
+        ///                    &lt;td&gt;Search CT:&lt;/td&gt;
+        ///                    &lt;td&gt;{9}&lt;/td&gt;
+        ///                &lt;/tr&gt;
+        ///                &lt;tr&gt;
         ///                    &lt;td&gt;Allow User Root Store:&lt;/td&gt;
         ///                    &lt;td&gt;{1}&lt;/td&gt;
         ///                &lt;/tr&gt;
@@ -176,11 +180,7 @@ namespace SSLVerifier.Core.Data {
         ///                    &lt;td&gt;Allowed TLS Versions:&lt;/td&gt;
         ///                    &lt;td&gt;{2}&lt;/td&gt;
         ///                &lt;/tr&gt;
-        ///                &lt;tr&gt;
-        ///                    &lt;td&gt;Weak RSA Key Check:&lt;/td&gt;
-        ///                    &lt;td&gt;{3}&lt;/td&gt;
-        ///                &lt;/tr&gt;
-        ///       [rest of string was truncated]&quot;;.
+        ///                [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string HTML_REPORT_META {
             get {
