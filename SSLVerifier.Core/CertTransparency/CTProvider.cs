@@ -6,6 +6,6 @@ namespace SSLVerifier.Core.CertTransparency {
     public interface ICTProvider {
         IList<ICertLogEntry> GetLogCertificates(String hostName);
         X509Certificate2 GetCertificate(ICertLogEntry logEntry);
-        Boolean CertExist(String hostName, String thumbprint);
+        Boolean CertExist(String hostName, X509Certificate2 certificate);
     }
 }

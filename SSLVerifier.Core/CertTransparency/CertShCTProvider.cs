@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Security.Cryptography.X509Certificates;
@@ -13,7 +14,7 @@ namespace SSLVerifier.Core.CertTransparency {
                     String json = wc.DownloadString($"https://crt.sh/?q={hostName}&output=json");
                     List<CertShLogEntry> obj = JsonConvert.DeserializeObject<List<CertShLogEntry>>(json);
                     return obj.Cast<ICertLogEntry>().ToList();
-                } catch {
+                } catch (Exception ex) {
                     // we were unable to connect to this provider for whatever reason, so simply return null instead of exception
                     return null;
                 }
@@ -32,12 +33,12 @@ namespace SSLVerifier.Core.CertTransparency {
                 }
             }
         }
-        public Boolean CertExist(String hostName, String thumbprint) {
+        public Boolean CertExist(String hostName, X509Certificate2 certificate) {
             if (String.IsNullOrEmpty(hostName)) {
                 throw new ArgumentNullException(nameof(hostName));
             }
-            if (String.IsNullOrEmpty(thumbprint)) {
-                throw new ArgumentNullException(nameof(thumbprint));
+            if (certificate == null) {
+                throw new ArgumentNullException(nameof(certificate));
             }
 
             IList<ICertLogEntry> entries = GetLogCertificates(hostName);
@@ -45,9 +46,20 @@ namespace SSLVerifier.Core.CertTransparency {
                 return false;
             }
 
+            IList<ICertLogEntry> quickCerts = entries
+                .Where(x => x.NotBefore.Date == certificate.NotBefore.Date && x.NotAfter.Date == certificate.NotAfter.Date)
+                .ToList();
+
+            if (quickCerts.Any()) {
+                entries = quickCerts;
+            }
+
             return entries.Select(GetCertificate)
                 .Where(x => x != null)
-                .Any(x => thumbprint.Equals(x.Thumbprint, StringComparison.OrdinalIgnoreCase));
+                .Any(x => {
+                         Debug.Assert(certificate.Thumbprint != null, "certificate.Thumbprint != null");
+                         return certificate.Thumbprint.Equals(x.Thumbprint, StringComparison.OrdinalIgnoreCase);
+                     });
         }
     }
 }

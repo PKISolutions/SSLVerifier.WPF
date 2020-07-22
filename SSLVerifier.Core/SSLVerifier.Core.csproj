@@ -39,7 +39,7 @@
   <ItemGroup>
     <Compile Include="CertTransparency\CertShCTProvider.cs" />
     <Compile Include="CertTransparency\CertShLogEntry.cs" />
-    <Compile Include="CertTransparency\CTLogEntry.cs" />
+    <Compile Include="CertTransparency\ICertLogEntry.cs" />
     <Compile Include="CertTransparency\CTProvider.cs" />
     <Compile Include="Data\ChainStatusText.Designer.cs">
       <AutoGen>True</AutoGen>

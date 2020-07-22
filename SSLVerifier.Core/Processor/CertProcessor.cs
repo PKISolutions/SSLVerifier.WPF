@@ -241,7 +241,7 @@ namespace SSLVerifier.Core.Processor {
 
                 if (Config.SearchCT) {
                     var prov = new CertShCTProvider();
-                    Boolean status = prov.CertExist(NativeEntry.ServerAddress, chainElement.Certificate.Thumbprint);
+                    Boolean status = prov.CertExist(NativeEntry.ServerAddress, chainElement.Certificate);
                     if (!status) {
                         addStatus(tree.Value, new X509ChainStatus2 { Status = X509ChainStatusFlags2.NotInTransparencyLog });
                     }
