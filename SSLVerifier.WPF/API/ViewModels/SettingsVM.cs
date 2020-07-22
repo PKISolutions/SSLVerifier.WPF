@@ -31,6 +31,7 @@ namespace SSLVerifier.API.ViewModels {
             SaveCommand = new RelayCommand(save);
         }
         void initProps() {
+            SearchCT = Settings.Default.SearchCT;
             StrictEKU = Settings.Default.StrictUsage;
             AllowUserTrustStore = Settings.Default.AllowUserTrust;
             CheckWeakRsaPubKey = Settings.Default.CheckWeakPubKey;
