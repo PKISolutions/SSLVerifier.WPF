@@ -6,7 +6,7 @@ using SSLVerifier.Core.Processor;
 
 namespace SSLVerifier.Core.Default {
     public class ServerEntry : IServerObject {
-        public ServerEntry(String serverAddress, Int32 port) {
+        public ServerEntry(String serverAddress, Int32 port = 443) {
             ServerAddress = serverAddress;
             Port = port;
             Log = new ServerLogWriter();

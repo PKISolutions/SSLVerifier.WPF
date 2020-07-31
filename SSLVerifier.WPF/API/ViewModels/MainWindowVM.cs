@@ -358,7 +358,7 @@ namespace SSLVerifier.API.ViewModels {
                 .Where(x => x.CanProcess)
                 .ForEachAsync(5, async x => {
                     var certVerifier = new CertProcessor(new CertProcessorConfig { Threshold = Threshold });
-                    await certVerifier.StartScan(x, uiContext);
+                    await certVerifier.StartScanAsync(x, uiContext);
                 });
 
             endScan();

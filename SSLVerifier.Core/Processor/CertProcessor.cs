@@ -288,7 +288,10 @@ namespace SSLVerifier.Core.Processor {
                 NativeEntry.ItemStatus = ServerStatusEnum.Valid;
             }
         }
-        public async Task StartScan(IServerObject server, SynchronizationContext ctx) {
+        public void StartScan(IServerObject server) {
+            StartScanAsync(server, null).Wait();
+        }
+        public async Task StartScanAsync(IServerObject server, SynchronizationContext ctx) {
             if (server == null) {
                 return;
             }
