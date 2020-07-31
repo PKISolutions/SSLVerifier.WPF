@@ -129,7 +129,13 @@ namespace SSLVerifier.Core.Processor {
                     entry.ServerObject.Log.AppendLine("Dumping certificates:");
                     for (Int32 index = 0; index < chain.ChainElements.Count; index++) {
                         entry.ServerObject.Log.AppendLine($"=============================== Certificate {index} ===============================");
-                        entry.ServerObject.Log.AppendLine(chain.ChainElements[index].Certificate.ToString(true));
+                        try {
+                            // there is a bug in .NET 4.5 on Windows 7 when calling ToString(true) on ECC cert
+                            entry.ServerObject.Log.AppendLine(chain.ChainElements[index].Certificate.ToString(true));
+                        } catch {
+                            // fallback to brief dump
+                            entry.ServerObject.Log.AppendLine(chain.ChainElements[index].Certificate.ToString(false));
+                        }
                         entry.InternalChain.ChainPolicy.ExtraStore.Add(chain.ChainElements[index].Certificate);
                     }
                 }
