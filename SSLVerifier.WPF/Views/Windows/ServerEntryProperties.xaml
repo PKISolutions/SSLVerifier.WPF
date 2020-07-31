@@ -12,6 +12,7 @@
         ResizeMode="NoResize"
         ShowInTaskbar="False"
         Title="Server Properties"
+        Icon="/Views/Images/props_icon.ico"
         Width="600">
     <Grid>
         <Grid.ColumnDefinitions>

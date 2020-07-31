@@ -259,6 +259,10 @@
     <Resource Include="Views\Images\Menu\html_16x16.png" />
     <Resource Include="Views\Images\app.ico" />
     <Resource Include="app.ico" />
+    <Resource Include="Views\Images\add_icon.ico" />
+    <Resource Include="Views\Images\settings_icon.ico" />
+    <Resource Include="Views\Images\props_icon.ico" />
+    <Resource Include="Views\Images\lic_icon.ico" />
     <Content Include="_ExternalReferences\Wpf.OfficeTheme.dll" />
   </ItemGroup>
   <ItemGroup>

@@ -12,6 +12,7 @@
         Background="{StaticResource PanelBackgroundBrush}"
         ResizeMode="NoResize"
         ShowInTaskbar="False"
+        Icon="/Views/Images/add_icon.ico"
         FocusManager.FocusedElement="{Binding ElementName=ServerNameBox}">
     <Window.DataContext>
         <vm:AddServerVM/>

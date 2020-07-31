@@ -11,6 +11,7 @@
         ResizeMode="NoResize"
         Background="{StaticResource PanelBackgroundBrush}"
         WindowStartupLocation="CenterOwner"
+        Icon="/Views/Images/lic_icon.ico"
         Height="480"
         Width="640">
     <Window.InputBindings>

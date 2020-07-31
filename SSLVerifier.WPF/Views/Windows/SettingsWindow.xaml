@@ -14,6 +14,7 @@
         Background="{StaticResource PanelBackgroundBrush}"
         Foreground="Navy"
         Title="Settings"
+        Icon="/Views/Images/settings_icon.ico"
         Width="500">
     <Window.DataContext>
         <viewModels:SettingsVM/>
