@@ -80,6 +80,9 @@
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>app.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="PresentationFramework.Aero">
       <Private>True</Private>
@@ -254,6 +257,8 @@
   <ItemGroup>
     <Resource Include="Views\Images\pkisolutions_logo_small.png" />
     <Resource Include="Views\Images\Menu\html_16x16.png" />
+    <Resource Include="Views\Images\app.ico" />
+    <Resource Include="app.ico" />
     <Content Include="_ExternalReferences\Wpf.OfficeTheme.dll" />
   </ItemGroup>
   <ItemGroup>

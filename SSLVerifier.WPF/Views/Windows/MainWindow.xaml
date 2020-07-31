@@ -7,7 +7,9 @@
         WindowStyle="ThreeDBorderWindow"
         ScrollViewer.HorizontalScrollBarVisibility="Visible"
         ScrollViewer.CanContentScroll="True"
-        Title="SSL Certificate Verifier" Height="550" Width="850"
+        Title="SSL Certificate Verifier"
+        Icon="/Views/Images/app.ico"
+        Height="550" Width="850"
         Closing="MainWindow_OnClosing">
     <Window.DataContext>
         <vm:MainWindowVM/>
