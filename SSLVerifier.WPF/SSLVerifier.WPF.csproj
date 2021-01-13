@@ -119,12 +119,12 @@
     <Compile Include="Views\Windows\AddServerWindow.xaml.cs">
       <DependentUpon>AddServerWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="API\MainLogic\XmlRoutine.cs" />
+    <Compile Include="API\MainLogic\JsonRoutine.cs" />
     <Compile Include="API\ModelObjects\ChainElement.cs" />
     <Compile Include="API\ModelObjects\ProxyObject.cs" />
     <Compile Include="API\ModelObjects\ReportObject.cs" />
     <Compile Include="API\ModelObjects\ServerLogWriter.cs" />
-    <Compile Include="API\ModelObjects\XmlObject.cs" />
+    <Compile Include="API\ModelObjects\RootExportDto.cs" />
     <Compile Include="API\ViewModels\AddServerVM.cs" />
     <Compile Include="Views\Windows\LicenseWindow.xaml.cs">
       <DependentUpon>LicenseWindow.xaml</DependentUpon>
@@ -270,6 +270,11 @@
       <Project>{CC7009E4-1446-43D9-900D-5B2013CAECDC}</Project>
       <Name>SSLVerifier.Core</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json">
+      <Version>12.0.3</Version>
+    </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

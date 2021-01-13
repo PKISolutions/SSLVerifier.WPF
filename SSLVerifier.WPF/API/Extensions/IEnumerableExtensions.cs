@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Xml.Serialization;
+using Newtonsoft.Json;
 using SSLVerifier.API.ModelObjects;
 
 namespace SSLVerifier.API.Extensions {
@@ -17,15 +17,12 @@ namespace SSLVerifier.API.Extensions {
                 }
             }
         }
-        public static void SaveAsXML(this IEnumerable<ServerObject> servers, String file) {
-            XmlObject root = new XmlObject { ServerObjects = servers.ToArray() };
-            FileStream fs = new FileStream(file, FileMode.Create);
-            try {
-                XmlSerializer serializer = new XmlSerializer(typeof(XmlObject));
-                serializer.Serialize(fs, root);
-            } finally {
-                fs.Close();
+        public static void SaveAsJson(this IEnumerable<ServerObject> servers, String file) {
+            if (servers == null) {
+                servers = new ServerObject[0];
             }
+            RootExportDto root = new RootExportDto { ServerObjects = servers.ToArray() };
+            File.WriteAllText(file, JsonConvert.SerializeObject(root));
         }
         public static Task ForEachAsync<T>(
             this IEnumerable<T> source, Int32 dop, Func<T, Task> body) {

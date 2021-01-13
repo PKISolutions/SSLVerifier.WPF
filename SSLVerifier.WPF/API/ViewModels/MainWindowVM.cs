@@ -45,11 +45,10 @@ namespace SSLVerifier.API.ViewModels {
             RemoveServerCommand = new RelayCommand(removeServer, CanRemoveServer);
             StartScanAsyncCommand = new AsyncCommand(startScanAsync, canStartScan);
             AddAndScanAsyncCommand = new AsyncCommand(addAndStartAsync, canAddAndScan);
-            ShowAboutCommand = new RelayCommand(ShowAbout);
+            ShowAboutCommand = new RelayCommand(showAbout);
             ShowEntryProperties = new RelayCommand(showProperties, canShowProperties);
             ShowSettings = new RelayCommand(showSettings);
-            SaveCsvCommand = new RelayCommand(saveAsCsv, canSaveCsv);
-            ShowLicenseCommand = new RelayCommand(ShowLicense);
+            ShowLicenseCommand = new RelayCommand(showLicense);
             SaveReportCommand = new RelayCommand(saveHtmlReport);
         }
 
@@ -58,7 +57,6 @@ namespace SSLVerifier.API.ViewModels {
         public ICommand OpenListCommand { get; set; }
         public ICommand SaveListCommand { get; set; }
         public ICommand SaveAsListCommand { get; set; }
-        public ICommand SaveCsvCommand { get; set; }
         public ICommand CloseCommand { get; set; }
         public ICommand ViewCertificateCommand { get; set; }
         public ICommand ViewChainCertificateCommand { get; set; }
@@ -172,14 +170,14 @@ namespace SSLVerifier.API.ViewModels {
         void openList(Object obj) {
             if (testSaved()) {
                 OpenFileDialog dlg = new OpenFileDialog {
-                    FileName = "ServerList.xml",
-                    DefaultExt = ".xml",
-                    Filter = "Server list files (.xml)|*.xml"
+                    FileName = "ServerList.json",
+                    DefaultExt = ".json",
+                    Filter = "Server list files (.json)|*.json"
                 };
                 Boolean? result = dlg.ShowDialog();
                 if (result != true) { return; }
                 try {
-                    XmlObject list = XmlRoutine.Deserialize(dlg.FileName);
+                    RootExportDto list = JsonRoutine.Deserialize(dlg.FileName);
                     if (list == null) { return; }
                     ServerList.Servers.Clear();
                     foreach (ServerObject item in list.ServerObjects) {
@@ -187,49 +185,36 @@ namespace SSLVerifier.API.ViewModels {
                     }
                     IsSaved = true;
                 } catch (Exception e) {
-                    MsgBox.Show("XML Read error", e.Message);
+                    MsgBox.Show("JSON Read error", e.Message);
                 }
             }
         }
         void saveList(Object obj) {
-            if (String.IsNullOrEmpty(LastSavedFile)) { saveAsList(null); }
+            if (String.IsNullOrEmpty(LastSavedFile)) {
+                saveAsList(null);
+                return;
+            }
             try {
-                ServerList.Servers.SaveAsXML(LastSavedFile);
+                ServerList.Servers.SaveAsJson(LastSavedFile);
                 IsSaved = true;
             } catch (Exception e) {
-                MsgBox.Show("XML Write error", e.Message);
+                MsgBox.Show("JSON Write error", e.Message);
             }
         }
         void saveAsList(Object obj) {
             SaveFileDialog dlg = new SaveFileDialog {
-                FileName = "ServerList.xml",
-                DefaultExt = ".xml",
-                Filter = "Server list files (.xml)|*.xml"
+                FileName = "ServerList.json",
+                DefaultExt = ".json",
+                Filter = "Server list files (.json)|*.json"
             };
             Boolean? result = dlg.ShowDialog();
             if (result == true) {
                 LastSavedFile = dlg.FileName;
                 try {
-                    ServerList.Servers.SaveAsXML(LastSavedFile);
+                    ServerList.Servers.SaveAsJson(LastSavedFile);
                     IsSaved = true;
                 } catch (Exception e) {
-                    MsgBox.Show("XML Write error", e.Message);
-                }
-            }
-        }
-        void saveAsCsv(Object obj) {
-            SaveFileDialog dlg = new SaveFileDialog {
-                FileName = "ServerList.csv",
-                DefaultExt = ".xml",
-                Filter = "Comma separated value file  (.csv)|*.csv"
-            };
-            Boolean? result = dlg.ShowDialog();
-            if (result == true) {
-                LastSavedFile = dlg.FileName;
-                try {
-                    ServerList.Servers.SaveAsCSV(dlg.FileName);
-                } catch (Exception e) {
-                    MsgBox.Show("CSV Write error", e.Message);
+                    MsgBox.Show("JSON Write error", e.Message);
                 }
             }
         }
@@ -296,9 +281,6 @@ namespace SSLVerifier.API.ViewModels {
         }
         Boolean canShowProperties(Object obj) {
             return SelectedItem != null;
-        }
-        Boolean canSaveCsv(Object obj) {
-            return ServerList.Servers.Count > 0;
         }
         Boolean canSaveList(Object obj) {
             return ServerList.Servers.Count > 0;
@@ -426,10 +408,10 @@ namespace SSLVerifier.API.ViewModels {
             return SelectedIndex > -1;
         }
 
-        static void ShowAbout(Object obj) {
+        static void showAbout(Object obj) {
             WindowsUI.ShowWindow<About>();
         }
-        static void ShowLicense(Object obj) {
+        static void showLicense(Object obj) {
             WindowsUI.ShowWindow<LicenseWindow>();
         }
         void showSettings(Object obj) {

@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Security.Cryptography.X509Certificates;
-using System.Xml.Serialization;
+using Newtonsoft.Json;
 using SSLVerifier.Core;
 using SSLVerifier.Core.Models;
 using SSLVerifier.Core.Processor;
 using SysadminsLV.WPF.OfficeTheme.Toolkit.ViewModels;
 
 namespace SSLVerifier.API.ModelObjects {
-    [XmlType(AnonymousType = true)]
     public class ServerObject : ViewModelBase, IServerObject {
         X509Certificate2 cert;
         String name;
@@ -22,8 +21,10 @@ namespace SSLVerifier.API.ModelObjects {
             Tree = new ObservableCollection<TreeNode<IChainElement>>();
             Proxy = new ProxyObject();
         }
+        public ServerObject(ProxyObject proxy) : this() {
+            Proxy = proxy;
+        }
 
-        [XmlElement]
         public String ServerAddress {
             get => name;
             set {
@@ -31,7 +32,6 @@ namespace SSLVerifier.API.ModelObjects {
                 OnPropertyChanged(nameof(ServerAddress));
             }
         }
-        [XmlElement]
         public Int32 Port {
             get => port;
             set {
@@ -40,7 +40,7 @@ namespace SSLVerifier.API.ModelObjects {
             }
         }
         public IServerProxy Proxy { get; set; }
-        [XmlIgnore]
+        [JsonIgnore]
         public ServerStatusEnum ItemStatus {
             get => status;
             set {
@@ -48,22 +48,22 @@ namespace SSLVerifier.API.ModelObjects {
                 OnPropertyChanged(nameof(ItemStatus));
             }
         }
-        [XmlIgnore]
+        [JsonIgnore]
         public IServerLogWriter Log { get; }
-        [XmlIgnore]
+        [JsonIgnore]
         public String ValidFrom => Certificate?.NotBefore.ToShortDateString();
 
-        [XmlIgnore]
+        [JsonIgnore]
         public String ValidTo => Certificate?.NotAfter.ToShortDateString();
 
-        [XmlIgnore]
+        [JsonIgnore]
         public Int32 DaysLeft => Certificate == null ? 0 : (Certificate.NotAfter - DateTime.Now).Days;
 
-        [XmlIgnore]
+        [JsonIgnore]
         public ObservableCollection<String> SAN { get; }
-        [XmlIgnore]
+        [JsonIgnore]
         public X509ChainStatusFlags2 ChainStatus { get; set; }
-        [XmlIgnore]
+        [JsonIgnore]
         public X509Certificate2 Certificate {
             get => cert;
             set {
@@ -74,9 +74,9 @@ namespace SSLVerifier.API.ModelObjects {
                 OnPropertyChanged(nameof(DaysLeft));
             }
         }
-        [XmlIgnore]
+        [JsonIgnore]
         public ObservableCollection<TreeNode<IChainElement>> Tree { get; }
-        [XmlIgnore]
+        [JsonIgnore]
         public Boolean CanProcess { get; set; }
         
         public override String ToString() {

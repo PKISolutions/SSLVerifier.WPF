@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Security;
+using Newtonsoft.Json;
 using SSLVerifier.Core;
 using SysadminsLV.WPF.OfficeTheme.Toolkit.ViewModels;
 
 namespace SSLVerifier.API.ModelObjects {
-    class ProxyObject : ViewModelBase, IServerProxy {
+    public class ProxyObject : ViewModelBase, IServerProxy {
         Boolean useProxy, useAuth;
         String server, user;
         Int32 port = 8080;
@@ -44,6 +45,7 @@ namespace SSLVerifier.API.ModelObjects {
                 OnPropertyChanged(nameof(UserName));
             }
         }
+        [JsonIgnore]
         public SecureString SecurePassword { get; set; }
     }
 }
