@@ -39,6 +39,7 @@ namespace SSLVerifier.API.ModelObjects {
                 OnPropertyChanged(nameof(Port));
             }
         }
+        [XmlIgnore]
         public IServerProxy Proxy { get; set; }
         [XmlIgnore]
         public ServerStatusEnum ItemStatus {
