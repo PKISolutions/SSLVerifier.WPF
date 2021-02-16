@@ -12,7 +12,7 @@ using System.Windows;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("PKI Solutions Inc.")]
 [assembly: AssemblyProduct("SSLVerifier")]
-[assembly: AssemblyCopyright("Copyright ©  2013-2020, PKI Solutions Inc.")]
+[assembly: AssemblyCopyright("Copyright ©  2013-2021, PKI Solutions Inc.")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
