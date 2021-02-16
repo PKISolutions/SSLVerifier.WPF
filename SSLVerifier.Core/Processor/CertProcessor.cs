@@ -172,6 +172,7 @@ namespace SSLVerifier.Core.Processor {
             } else {
                 NativeEntry.Log.AppendLine("Certificate chaining engine reported some issues with the certificate.");
                 foreach (X509ChainStatus chainStatus in Entry.InternalChain.ChainStatus) {
+                    NativeEntry.ChainStatus |= (X509ChainStatusFlags2)chainStatus.Status;
                     NativeEntry.Log.AppendLine(chainStatus.Status.ToString());
                 }
             }
