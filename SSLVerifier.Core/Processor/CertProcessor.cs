@@ -88,7 +88,7 @@ namespace SSLVerifier.Core.Processor {
                 } else if (e.Message.Contains("403")) {
                     NativeEntry.Log.AppendLine("Server requested authorization (HTTP/403), cannot proceed.");
                 } else {
-                    NativeEntry.Log.AppendLine($"An exception occured while attempting to connect to server: {e.Message}");
+                    NativeEntry.Log.AppendLine($"An exception occurred while attempting to connect to server: {e.Message}");
                     if (e.InnerException != null) {
                         NativeEntry.Log.AppendLine($"Details: {e.InnerException.Message}");
                     }
