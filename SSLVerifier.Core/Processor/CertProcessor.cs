@@ -275,12 +275,12 @@ namespace SSLVerifier.Core.Processor {
             if (status == null) { return; }
             foreach (X509ChainStatus2 flag in status) {
                 if (flag.Status != X509ChainStatusFlags2.NoError && (_warningStatuses & flag.Status) == 0) {
-                    temp.HasErrors = globalErrors = true;
+                    ((ChainElement)temp).HasErrors = globalErrors = true;
                 }
                 if ((_warningStatuses & flag.Status) > 0) {
-                    temp.HasWarnings = globalWarnings = true;
+                    ((ChainElement)temp).HasWarnings = globalWarnings = true;
                 }
-                temp.NativeErrors |= flag.Status;
+                ((ChainElement)temp).NativeErrors |= flag.Status;
             }
         }
         void getEffectiveStatus() {
