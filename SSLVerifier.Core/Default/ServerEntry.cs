@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using SSLVerifier.Core.Models;
 using SSLVerifier.Core.Processor;
@@ -19,6 +21,14 @@ namespace SSLVerifier.Core.Default {
         public ObservableCollection<String> SAN { get; } = new ObservableCollection<String>();
         public X509ChainStatusFlags2 ChainStatus { get; set; }
         public X509Certificate2 Certificate { get; set; }
+        public ICollection<IChainElement[]> FlatTree {
+            get {
+                var list = Tree
+                    .Select(treeNode => treeNode.Flatten().Skip(1).ToArray())
+                    .ToList();
+                return list.AsReadOnly();
+            }
+        }
         public ObservableCollection<TreeNode<IChainElement>> Tree { get; } = new ObservableCollection<TreeNode<IChainElement>>();
     }
 }
