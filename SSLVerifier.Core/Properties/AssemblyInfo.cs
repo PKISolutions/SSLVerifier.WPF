@@ -6,11 +6,11 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("SSLVerifier.Core")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Core library for SSL Verifier Tool")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("PKI Solutions Inc.")]
 [assembly: AssemblyProduct("SSLVerifier.Core")]
-[assembly: AssemblyCopyright("Copyright ©  2020")]
+[assembly: AssemblyCopyright("Copyright © PKI Solutions Inc, 2020-2021")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
