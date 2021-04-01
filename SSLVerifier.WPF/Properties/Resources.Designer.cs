@@ -59,33 +59,5 @@ namespace SSLVerifier.Properties {
                 resourceCulture = value;
             }
         }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to &lt;!DOCTYPE html&gt;
-        ///
-        ///&lt;html lang=&quot;en&quot; xmlns=&quot;http://www.w3.org/1999/xhtml&quot;&gt;
-        ///&lt;head&gt;
-        ///    &lt;meta charset=&quot;utf-8&quot; /&gt;
-        ///    &lt;title&gt;License Agreement&lt;/title&gt;
-        ///    &lt;style type=&quot;text/css&quot;&gt;
-        ///        body {
-        ///            font: 13pt Helvetica
-        ///        }
-        ///
-        ///        .smaller {
-        ///            font-size: small;
-        ///        }
-        ///    &lt;/style&gt;
-        ///&lt;/head&gt;
-        ///&lt;body&gt;
-        ///    &lt;h1&gt;Microsoft Public License (Ms-PL)&lt;/h1&gt;
-        ///
-        ///    &lt;p&gt;This license governs use of the accompanying software. If you use the software, you accept this license. If you do not ac [rest of string was truncated]&quot;;.
-        /// </summary>
-        internal static string License {
-            get {
-                return ResourceManager.GetString("License", resourceCulture);
-            }
-        }
     }
 }
