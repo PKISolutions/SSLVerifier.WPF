@@ -4,7 +4,6 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:system="clr-namespace:System;assembly=mscorlib"
-        Title="Add server" Height="125" Width="340"
         xmlns:vm="clr-namespace:SSLVerifier.API.ViewModels"
         mc:Ignorable="d"
         d:DataContext="{d:DesignInstance vm:AddServerVM}"
@@ -13,6 +12,9 @@
         ResizeMode="NoResize"
         ShowInTaskbar="False"
         Icon="/Views/Images/add_icon.ico"
+        Title="Add server"
+        Height="125"
+        Width="340"
         FocusManager.FocusedElement="{Binding ElementName=ServerNameBox}">
     <Window.DataContext>
         <vm:AddServerVM/>
