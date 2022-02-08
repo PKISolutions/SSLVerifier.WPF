@@ -57,8 +57,8 @@ namespace SSLVerifier.Core.CertTransparency {
             return entries.Select(GetCertificate)
                 .Where(x => x != null)
                 .Any(x => {
-                         Debug.Assert(certificate.Thumbprint != null, "certificate.Thumbprint != null");
-                         return certificate.Thumbprint.Equals(x.Thumbprint, StringComparison.OrdinalIgnoreCase);
+                         Debug.Assert(certificate.SerialNumber != null, "certificate.SerialNumber != null");
+                         return certificate.SerialNumber.Equals(x.SerialNumber, StringComparison.OrdinalIgnoreCase);
                      });
         }
     }
