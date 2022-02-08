@@ -51,6 +51,8 @@ namespace SSLVerifier.API.ViewModels {
             SslProtocolsToUse.Add(new SslProtocolEnablerModel(SslProtocols.Tls11, enabled));
             enabled = (Settings.Default.SslProtocolsToUse & (Int32)SslProtocols.Tls12) > 0;
             SslProtocolsToUse.Add(new SslProtocolEnablerModel(SslProtocols.Tls12, enabled));
+            enabled = (Settings.Default.SslProtocolsToUse & (Int32)SslProtocols.Tls13) > 0;
+            SslProtocolsToUse.Add(new SslProtocolEnablerModel(SslProtocols.Tls13, enabled));
         }
         void initAlgs() {
             foreach (String alg in Settings.Default.WeakAlgs) {

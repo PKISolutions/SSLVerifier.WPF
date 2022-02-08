@@ -41,6 +41,9 @@ namespace SSLVerifier.API.ModelObjects {
                     case SslProtocols.Tls12:
                         ProtocolName = "TLS 1.2";
                         break;
+                    case SslProtocols.Tls13:
+                        ProtocolName = "TLS 1.3";
+                        break;
                 }
             }
         }

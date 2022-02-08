@@ -15,7 +15,7 @@ namespace SSLVerifier.Core.Default {
 
             CheckWeakPubKey = true;
             MinimumRsaPubKeyLength = 2048;
-            SslProtocolsToUse = SslProtocols.Tls11 | SslProtocols.Tls12;
+            SslProtocolsToUse = SslProtocols.Tls11 | SslProtocols.Tls12 | SslProtocols.Tls13;
             Threshold = 30;
         }
 

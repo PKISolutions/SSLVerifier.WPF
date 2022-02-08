@@ -49,24 +49,6 @@ namespace SSLVerifier.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute(@"<?xml version=""1.0"" encoding=""utf-16""?>
-<ArrayOfString xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"">
-  <string>1.2.840.113549.1.1.2</string>
-  <string>1.2.840.113549.1.1.3</string>
-  <string>1.2.840.113549.1.1.4</string>
-  <string>1.2.840.113549.1.1.5</string>
-</ArrayOfString>")]
-        public global::System.Collections.Specialized.StringCollection WeakAlgs {
-            get {
-                return ((global::System.Collections.Specialized.StringCollection)(this["WeakAlgs"]));
-            }
-            set {
-                this["WeakAlgs"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("2048")]
         public int MinimumRsaPubKeyLength {
             get {
@@ -103,7 +85,7 @@ namespace SSLVerifier.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("3840")]
+        [global::System.Configuration.DefaultSettingValueAttribute("16128")]
         public int SslProtocolsToUse {
             get {
                 return ((int)(this["SslProtocolsToUse"]));
@@ -122,6 +104,24 @@ namespace SSLVerifier.Properties {
             }
             set {
                 this["SearchCT"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute(@"<?xml version=""1.0"" encoding=""utf-16""?>
+<ArrayOfString xmlns:xsd=""http://www.w3.org/2001/XMLSchema"" xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"">
+  <string>1.2.840.113549.1.1.2</string>
+  <string>1.2.840.113549.1.1.3</string>
+  <string>1.2.840.113549.1.1.4</string>
+  <string>1.2.840.113549.1.1.5</string>
+</ArrayOfString>")]
+        public global::System.Collections.Specialized.StringCollection WeakAlgs {
+            get {
+                return ((global::System.Collections.Specialized.StringCollection)(this["WeakAlgs"]));
+            }
+            set {
+                this["WeakAlgs"] = value;
             }
         }
     }

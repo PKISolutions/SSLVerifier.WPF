@@ -8,15 +8,6 @@
     <Setting Name="AllowUserTrust" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
-    <Setting Name="WeakAlgs" Type="System.Collections.Specialized.StringCollection" Scope="User">
-      <Value Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
-&lt;ArrayOfString xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
-  &lt;string&gt;1.2.840.113549.1.1.2&lt;/string&gt;
-  &lt;string&gt;1.2.840.113549.1.1.3&lt;/string&gt;
-  &lt;string&gt;1.2.840.113549.1.1.4&lt;/string&gt;
-  &lt;string&gt;1.2.840.113549.1.1.5&lt;/string&gt;
-&lt;/ArrayOfString&gt;</Value>
-    </Setting>
     <Setting Name="MinimumRsaPubKeyLength" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">2048</Value>
     </Setting>
@@ -27,10 +18,19 @@
       <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="SslProtocolsToUse" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">3840</Value>
+      <Value Profile="(Default)">16128</Value>
     </Setting>
     <Setting Name="SearchCT" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="WeakAlgs" Type="System.Collections.Specialized.StringCollection" Scope="User">
+      <Value Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
+&lt;ArrayOfString xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"&gt;
+  &lt;string&gt;1.2.840.113549.1.1.2&lt;/string&gt;
+  &lt;string&gt;1.2.840.113549.1.1.3&lt;/string&gt;
+  &lt;string&gt;1.2.840.113549.1.1.4&lt;/string&gt;
+  &lt;string&gt;1.2.840.113549.1.1.5&lt;/string&gt;
+&lt;/ArrayOfString&gt;</Value>
     </Setting>
   </Settings>
 </SettingsFile>
